@@ -1,21 +1,22 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:store_app2/repositories/test_Repo.dart';
+import 'package:store_app2/view_models/body_view_model.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
 
 import '../../constant.dart';
-import '../../models/product_model.dart';
 
 class ProductCardWidget extends StatelessWidget {
   ProductCardWidget({
     this.itemIndex,
     this.productModel,
     this.onTapFun,
+    this.dataConnectionEnum,
   });
 
   final int? itemIndex;
   final ProductViewModel? productModel;
   final Function()? onTapFun;
+  final DataConnectionEnum? dataConnectionEnum;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +50,14 @@ class ProductCardWidget extends StatelessWidget {
               left: 0.0,
               top: 0.0,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 width: 200.0,
                 height: 160.0,
-                child: Image.asset("${productModel!.image}"),
+                child: (dataConnectionEnum ==
+                        DataConnectionEnum.localData)
+                    ? Image.asset("${productModel!.image}")
+                    : Image.network("${productModel!.image}"),
               ),
             ),
             Positioned(
@@ -64,16 +69,16 @@ class ProductCardWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding),
                       child: Text(
                         "${productModel!.title}",
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                     Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding),
                       child: Text(
                         " ${productModel!.subTitle}",
                         style: Theme.of(context).textTheme.caption,

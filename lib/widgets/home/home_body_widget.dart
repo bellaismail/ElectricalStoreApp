@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
+import 'package:store_app2/repositories/repo_api.dart';
 import 'package:store_app2/repositories/test_Repo.dart';
 import 'package:store_app2/screens/details_screen.dart';
 import 'package:store_app2/view_models/body_view_model.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
 import 'package:store_app2/widgets/home/product_card_widget.dart';
 
-class HomeBodyWidget extends StatelessWidget {
+class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
   HomeBodyViewModel homeBodyViewModel =
-      HomeBodyViewModel(repository: TestRepo());
+      HomeBodyViewModel(repository: TestRepo()/*APIRepo()*/);
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +47,15 @@ class HomeBodyWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DetailsScreen(productViewModel: snapshot.data![index]),
+                                  builder: (context) => DetailsScreen(
+                                    productViewModel: snapshot.data![index],
+                                    dataConnectionEnum: homeBodyViewModel.getDataConnectionEnum(),
+                                  ),
                                 ),
                               );
                             },
+                            dataConnectionEnum:
+                                homeBodyViewModel.getDataConnectionEnum(),
                           );
                         },
                       );
