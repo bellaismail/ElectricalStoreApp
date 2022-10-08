@@ -1,6 +1,6 @@
 class ProductModel {
-  final int? id, price;
-  final String? title, subTitle, description, image;
+  int? id, price;
+  String? title, subTitle, description, image;
 
   ProductModel({
     this.id,
@@ -10,9 +10,30 @@ class ProductModel {
     this.description,
     this.image,
   });
+
+  ProductModel.fromJSON(Map<String, dynamic>json){
+    id = json["id"];
+    price = json["price"];
+    title = json["title"];
+    subTitle = json["subTitle"];
+    description = json["description"];
+    image = json["image"];
+  }
+
+  Map<String, dynamic>toJSON(){
+    return {
+      "id" : id,
+      "price" : price,
+      "title" : title,
+      "subTitle" : subTitle,
+      "description" : description,
+      "image" : image,
+    };
+  }
+
 }
 
-List<ProductModel> ProductList = [
+List<ProductModel> productList = [
   ProductModel(
     id: 1,
     price: 59,

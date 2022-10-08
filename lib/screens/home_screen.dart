@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
-import 'package:store_app2/widgets/home/home_body.dart';
+import 'package:store_app2/widgets/home/home_body_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: homeAppBar(),
-      body: const HomeBody(),
+      body: HomeBodyWidget(),
     );
   }
   AppBar homeAppBar(){
