@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1039181464660",
+    "project_id": "electricalstoreapp",
+    "storage_bucket": "electricalstoreapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039181464660:android:47c9f940ac0d912d08d9c1",
+        "android_client_info": {
+          "package_name": "com.example.store_app2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1039181464660-sg9vmqcrjdqnoujq2retor2j4sj0dd20.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.store_app2",
+            "certificate_hash": "7d54988bee3cd7a25d7d72216bfe372951487f8d"
+          }
+        },
+        {
+          "client_id": "1039181464660-c6p1t299n3iglth16sneuttbfcr4obi6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrDrEtfcmPN_fCXoI9z8tUlS9CJZ8FWuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1039181464660-c6p1t299n3iglth16sneuttbfcr4obi6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
