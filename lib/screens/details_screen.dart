@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
-import '../widgets/details/details_body_widget.dart';
+import '../widgets/details_widgets/details_body_widget.dart';
 
 class DetailsScreen extends StatelessWidget {
   final ProductViewModel? productViewModel;

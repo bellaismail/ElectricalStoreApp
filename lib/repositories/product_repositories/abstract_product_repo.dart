@@ -1,8 +1,8 @@
 import 'package:store_app2/constant.dart';
 
-import '../models/product_model.dart';
+import '../../models/product_model.dart';
 
-abstract class Repository{
+abstract class ProductRepository{
   DataConnectionEnum? dataConnectionEnum;
   Future<List<ProductModel>> getProductList();
 }

@@ -36,6 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
   provider: ^6.0.3
+  cloud_firestore: ^3.5.1
+  firebase_core: ^1.24.0
+  connectivity_plus: ^2.3.9
+  modal_progress_hud_nsn: ^0.3.0
+  firebase_auth:
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
@@ -69,7 +75,7 @@ flutter:
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
-  # For details regarding adding assets from package dependencies, see
+  # For details_widgets regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
   # To add custom fonts to your application, add a fonts section here,
@@ -89,5 +95,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts from package dependencies,
+  # For details_widgets regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

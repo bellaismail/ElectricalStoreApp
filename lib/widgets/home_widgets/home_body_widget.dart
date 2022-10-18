@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
-import 'package:store_app2/repositories/repo_api.dart';
-import 'package:store_app2/repositories/test_Repo.dart';
+import 'package:store_app2/repositories/product_repositories/product_repo_api.dart';
+import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
 import 'package:store_app2/screens/details_screen.dart';
 import 'package:store_app2/view_models/body_view_model.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
-import 'package:store_app2/widgets/home/product_card_widget.dart';
+
+import '../home_widgets/product_card_widget.dart';
 
 class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
   HomeBodyViewModel homeBodyViewModel =
-      HomeBodyViewModel(repository: TestRepo()/*APIRepo()*/);
+      HomeBodyViewModel(repository: ProductTestRepo()/*APIRepo()*/);
 
   @override
   Widget build(BuildContext context) {

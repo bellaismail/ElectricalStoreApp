@@ -1,8 +1,8 @@
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/models/product_model.dart';
-import 'package:store_app2/repositories/abstract_repo.dart';
+import 'package:store_app2/repositories/product_repositories/abstract_product_repo.dart';
 
-class APIRepo extends Repository {
+class ProductAPIRepo extends ProductRepository {
   @override
   DataConnectionEnum? get dataConnectionEnum => DataConnectionEnum.interNetData;
 

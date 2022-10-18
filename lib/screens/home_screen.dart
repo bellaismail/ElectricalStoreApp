@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
-import 'package:store_app2/widgets/home/home_body_widget.dart';
+import 'package:store_app2/widgets/home_widgets/drawer.dart';
+import 'package:store_app2/widgets/home_widgets/home_body_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       appBar: homeAppBar(),
       body: HomeBodyWidget(),
+      endDrawer: const DrawerWidget(),
     );
   }
   AppBar homeAppBar(){
@@ -18,9 +20,6 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       elevation: 0.0,
       title: const Text("مرحبا بكم بمتجر الالكترونيات"),
-      actions: [
-        IconButton(onPressed: (){}, icon: const Icon(Icons.menu))
-      ],
     );
   }
 }

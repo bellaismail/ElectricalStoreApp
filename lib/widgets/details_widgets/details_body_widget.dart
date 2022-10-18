@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
-import 'package:store_app2/widgets/details/selected_point_widget.dart';
-import 'package:store_app2/widgets/home/home_body_widget.dart';
+import 'package:store_app2/widgets/details_widgets/selected_point_widget.dart';
+import 'package:store_app2/widgets/home_widgets/home_body_widget.dart';
 
 class DetailsBodyWidget extends StatelessWidget {
   DetailsBodyWidget({
