@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/screens/auth_screens/login_screen.dart';
 import 'package:store_app2/screens/home_screen.dart';
+import 'package:store_app2/view_models/login_views_models/login_screen_view_model.dart';
 import 'package:store_app2/view_models/login_views_models/login_text_field_view_model.dart';
 import 'package:store_app2/view_models/product_card_widget_view_model.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (context) => RegisterTextFieldViewModel()),
         ChangeNotifierProvider(create: (context) => RegisterScreenViewModel()),
+        ChangeNotifierProvider(create: (context) => LoginScreenViewModel()),
       ],
       builder: (context, child) {
         return GetMaterialApp(

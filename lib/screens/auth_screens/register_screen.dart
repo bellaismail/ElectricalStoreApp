@@ -4,12 +4,12 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/repositories/user_repositories/user_repo_firebase.dart';
-import 'package:store_app2/screens/home_screen.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
 import 'package:store_app2/widgets/register_widgets/snak_bar_widget.dart';
 
 import '../../constant.dart';
 import '../../widgets/login_widgets/socail_login_icon_widget.dart';
+import '../../widgets/register_widgets/auth_top_clipPath_widget.dart';
 import '../../widgets/register_widgets/register_text_field_widget.dart';
 import 'login_screen.dart';
 
@@ -31,16 +31,16 @@ class RegisterScreen extends StatelessWidget {
       appBar: null,
       body: Column(
         children: [
-          // AuthTopClipPathWidget(text: "انشاء حساب"),
+          AuthTopClipPathWidget(text: "انشاء حساب"),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: kDefaultPadding,
-              ),
-              child: Form(
-                key: _key,
-                child: ModalProgressHUD(
-                  inAsyncCall: provider.spinner,
+            child: ModalProgressHUD(
+              inAsyncCall: provider.spinner,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding,
+                ),
+                child: Form(
+                  key: _key,
                   child: ListView(
                     children: [
                       RegisterTextFieldWidget(
@@ -128,7 +128,8 @@ class RegisterScreen extends StatelessWidget {
                             var connectivityResult =
                                 await (Connectivity().checkConnectivity());
                             if (_key.currentState!.validate()) {
-                              if (connectivityResult != ConnectivityResult.wifi &&
+                              if (connectivityResult !=
+                                      ConnectivityResult.wifi &&
                                   connectivityResult !=
                                       ConnectivityResult.mobile) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -140,13 +141,20 @@ class RegisterScreen extends StatelessWidget {
                               } else {
                                 await provider
                                     .registerFun(
+                                      context,
                                       userRepository: UserRepoFirebase(),
                                       userModel: UserModel(
                                         name: nameController.text,
                                         email: emailController.text,
                                         password: passwordController.text,
                                       ),
-                                    );
+                                    )
+                                    .then((value) => {
+                                          nameController.clear(),
+                                          emailController.clear(),
+                                          passwordController.clear(),
+                                          confirmController.clear(),
+                                        });
                               }
                             }
                           },

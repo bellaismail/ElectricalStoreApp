@@ -8,10 +8,17 @@ class LoginTextFieldWidget extends StatefulWidget {
   LoginTextFieldWidget({
     this.hint,
     this.textInputType,
+    this.controller,
+    this.validationFun,
+    this.onChangeFun,
   });
 
   final String? hint;
   final TextInputType? textInputType;
+  final TextEditingController? controller;
+  final String? Function(String?)? validationFun;
+  final Function(String)? onChangeFun;
+
 
   @override
   State<LoginTextFieldWidget> createState() => _LoginTextFieldWidgetState();
@@ -24,9 +31,12 @@ class _LoginTextFieldWidgetState extends State<LoginTextFieldWidget> {
     return Padding(
       padding: const EdgeInsets.all(kDefaultPadding / 2),
       child: TextFormField(
-        onChanged: (val){
-          provider.changeTextFieldDirection(val);
-        },
+        // onChanged: (val){
+        //   provider.changeTextFieldDirection(val);
+        // },
+        onChanged: widget.onChangeFun,
+        controller: widget.controller,
+        validator: widget.validationFun,
         textDirection: provider.textDirection,
         keyboardType: widget.textInputType,
         obscuringCharacter: "*",

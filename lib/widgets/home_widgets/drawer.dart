@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
-import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/view_models/drawer_view_model.dart';
+
+import '../../repositories/user_repositories/user_repo_firebase.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -74,18 +74,13 @@ class BodyDrawerWidget extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          // BodyDrawerRowWidget(text: drawerRowList[0]["text"], icon: drawerRowList[0]["icon"]),
-          // BodyDrawerRowWidget(text: drawerRowList[1]["text"], icon: drawerRowList[1]["icon"]),
-          // BodyDrawerRowWidget(text: drawerRowList[2]["text"], icon: drawerRowList[2]["icon"]),
-          // BodyDrawerRowWidget(text: drawerRowList[3]["text"], icon: drawerRowList[3]["icon"]),
-          // BodyDrawerRowWidget(text: drawerRowList[4]["text"], icon: drawerRowList[4]["icon"]),
-          // BodyDrawerRowWidget(text: drawerRowList[5]["text"], icon: drawerRowList[5]["icon"]),
           Expanded(
             child: ListView.builder(
               itemCount: drawerRowList.length,
               itemBuilder: (context, index) => BodyDrawerRowWidget(
                 text: drawerRowList[index]["text"],
                 icon: drawerRowList[index]["icon"],
+                onTapFun: drawerRowList[index]["onTapFun"] == null ?null :drawerRowList[index]["onTapFun"],
               ),
             ),
           ),
@@ -98,32 +93,20 @@ class BodyDrawerWidget extends StatelessWidget {
 class BodyDrawerRowWidget extends StatelessWidget {
   final IconData? icon;
   final String? text;
+  final Function()? onTapFun;
 
-  BodyDrawerRowWidget({this.text, this.icon});
+  BodyDrawerRowWidget({
+    this.text,
+    this.icon,
+    this.onTapFun,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         InkWell(
-          onTap: () async {
-            CollectionReference c =
-                FirebaseFirestore.instance.collection("owner");
-            try {
-              UserModel user = UserModel(
-                name: "Bilal Ashraf",
-                email: "bellaismail629@gmail.com",
-                image: "ImagePath",
-              );
-              await c.doc("123456789").set({
-                "name": user.name,
-                "email": user.email,
-                "image": user.image,
-              }).then((value) => Navigator.pop(context));
-            } catch (e) {
-              print("**************somethingWrong :$e//////////////");
-            }
-          },
+          onTap: onTapFun,
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Row(

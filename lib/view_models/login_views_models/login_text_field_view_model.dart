@@ -25,12 +25,16 @@ class LoginTextFieldViewModel with ChangeNotifier {
         : false;
   }
 
-  void changeTextFieldDirection(val){
+  void changeTextFieldDirection(String? val){
     RegExp exp = RegExp("[a-zA-Z]");
-    if(exp.hasMatch(val[val.length - 1]) && val[val.length - 1] != " "){
-        textDirection = TextDirection.ltr;
-    }else{
-        textDirection = TextDirection.rtl;
+    if(val != null){
+      if(val.isNotEmpty){
+        if(exp.hasMatch(val[val.length - 1])){
+          textDirection = TextDirection.ltr;
+        }else{
+          textDirection = TextDirection.rtl;
+        }
+      }
     }
     notifyListeners();
   }

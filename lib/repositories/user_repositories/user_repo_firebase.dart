@@ -7,7 +7,9 @@ import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/repositories/user_repositories/abstract_user_repo.dart';
 import 'package:store_app2/screens/auth_screens/login_screen.dart';
 import 'package:store_app2/screens/home_screen.dart';
+import 'package:store_app2/view_models/login_views_models/login_screen_view_model.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
+import 'package:provider/provider.dart';
 
 class UserRepoFirebase extends UserRepository {
   @override
@@ -45,10 +47,11 @@ class UserRepoFirebase extends UserRepository {
   }
 
   @override
-  Future<void> signUp(UserModel userModel) async {
+  Future<void> signUp(UserModel userModel, BuildContext context) async {
     ////////////////////////////////////////////////////
+    var provider = Provider.of<RegisterScreenViewModel>(context, listen: false);
     try {
-      RegisterScreenViewModel().changeSpinner(true);
+      provider.changeSpinner(true);
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: userModel.email!,
@@ -60,9 +63,9 @@ class UserRepoFirebase extends UserRepository {
                           .then((value) => print("go to home screen")),
                     }),
               });
-      RegisterScreenViewModel().changeSpinner(false);
+      provider.changeSpinner(false);
     } on FirebaseAuthException catch (e) {
-      RegisterScreenViewModel().changeSpinner(false);
+      provider.changeSpinner(false);
       if (e.code == "email-already-in-use") {
         Get.snackbar(
           "خطأ",
@@ -79,20 +82,63 @@ class UserRepoFirebase extends UserRepository {
         print("*****${e.code}****");
       }
     } catch (e) {
-      RegisterScreenViewModel().changeSpinner(false);
+      provider.changeSpinner(false);
       throw Exception("***SomeThing Wrong on signUp Fun:=> $e :=>***");
     }
     ////////////////////////////////////////////////////
   }
 
   @override
-  Future<void> signOut() async{
-    try{
+  Future<void> signOut() async {
+    try {
       await FirebaseAuth.instance.signOut().then((value) => {
-        Get.off(LoginScreen()),
-      });
-    }catch(e){
+            Get.off(LoginScreen()),
+          });
+    } catch (e) {
       throw Exception("*** SomeThing Wrong on signOutFun $e ***");
     }
   }
+
+  @override
+  Future<void> signIn(UserModel userModel, BuildContext context) async {
+    var provider = Provider.of<LoginScreenViewModel>(context, listen: false);
+    try {
+      provider.changeSpinner(true);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+        email: userModel.email!,
+        password: userModel.password!,
+      )
+          .then((value) => {
+        Get.off(const HomeScreen()),
+      });
+      provider.changeSpinner(false);
+    } on FirebaseAuthException catch (e) {
+      provider.changeSpinner(false);
+      if (e.code == "user-not-found") {
+        Get.snackbar(
+          "خطأ",
+          "هذا البريد غير موجود",
+          backgroundColor: Colors.orangeAccent,
+        );
+      } else if(e.code == "wrong-password"){
+        Get.snackbar(
+          "خطأ",
+          "قد يكون البريد او كلمه السر غير صحيحين",
+          backgroundColor: Colors.orangeAccent,
+        );
+      }else{
+        print('***${e.code}///');
+      }
+    }catch (e) {
+      provider.changeSpinner(false);
+      throw Exception("*** SomeThing Wrong on signOutFun ${e.runtimeType} ***");
+    }
+  }
 }
+
+
+
+/*
+*
+* */

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/repositories/user_repositories/abstract_user_repo.dart';
@@ -8,13 +9,7 @@ class RegisterScreenViewModel with ChangeNotifier {
   IconData confirmIcon = Icons.visibility_off_rounded;
 
   changeSpinner(bool spinnerOrNot) {
-    if (spinnerOrNot == true) {
-      spinner = true;
-      print("************$spinner 1***********");
-    } else {
-      spinner = false;
-      print("************$spinner 2***********");
-    }
+    spinnerOrNot? spinner = true : spinner = false;
     notifyListeners();
   }
 
@@ -36,10 +31,12 @@ class RegisterScreenViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> registerFun({required UserRepository userRepository,required UserModel userModel}) async {
-    // changeSpinner(true);
-    await userRepository.signUp(userModel);
-    // changeSpinner(false);
+  Future<void> registerFun(BuildContext context,{required UserRepository userRepository,required UserModel userModel}) async {
+    await userRepository.signUp(userModel, context);
     notifyListeners();
+  }
+
+  Future<void> signOut({required UserRepository userRepository})async{
+    await userRepository.signOut();
   }
 }
