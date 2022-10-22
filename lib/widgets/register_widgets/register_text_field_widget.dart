@@ -12,6 +12,8 @@ class RegisterTextFieldWidget extends StatefulWidget {
     this.controller,
     this.iconButtonFun,
     this.validator,
+    this.onChangeFun,
+    this.fieldTextDirection,
   });
 
   final String? hint;
@@ -20,6 +22,8 @@ class RegisterTextFieldWidget extends StatefulWidget {
   final String? Function(String?)? validator;
   final Function()? iconButtonFun;
   TextEditingController? controller;
+  final Function(String)? onChangeFun;
+  final TextDirection? fieldTextDirection;
 
   @override
   State<RegisterTextFieldWidget> createState() =>
@@ -35,10 +39,8 @@ class _RegisterTextFieldWidgetState extends State<RegisterTextFieldWidget> {
       child: TextFormField(
         validator: widget.validator,
         controller: widget.controller,
-        onChanged: (val) {
-          provider.changeTextFieldDirection(val);
-        },
-        textDirection: provider.textDirection,
+        onChanged: widget.onChangeFun,
+        textDirection: widget.fieldTextDirection,
         keyboardType: widget.textInputType,
         obscuringCharacter: "*",
         obscureText: widget.suffixIcon == Icons.visibility_off_rounded ? true : false,

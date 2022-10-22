@@ -2,7 +2,10 @@ import 'package:store_app2/constant.dart';
 import 'package:store_app2/models/product_model.dart';
 import 'package:store_app2/repositories/product_repositories/abstract_product_repo.dart';
 
+import '../../view_models/product_view_model.dart';
+
 class ProductAPIRepo extends ProductRepository {
+  //Used for change Image Assets from network image to locale image
   @override
   DataConnectionEnum? get dataConnectionEnum => DataConnectionEnum.interNetData;
 
@@ -19,5 +22,17 @@ class ProductAPIRepo extends ProductRepository {
         image: "https://freepngimg.com/thumb/camera/24673-5-photo-camera-thumb.png",
       ),
     ];
+  }
+
+  @override
+  Future<void> addProductToFavorites(ProductViewModel productViewModel) {
+    // TODO: implement addProductToFavorites
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ProductViewModel>> getProductToFavorites() {
+    // TODO: implement getProductToFavorites
+    throw UnimplementedError();
   }
 }

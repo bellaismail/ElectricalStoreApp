@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/view_models/drawer_view_model.dart';
 
-import '../../repositories/user_repositories/user_repo_firebase.dart';
-
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
 

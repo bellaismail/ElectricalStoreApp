@@ -10,5 +10,6 @@ class ProductViewModel{
   String? get subTitle => productModel!.subTitle;
   String? get description => productModel!.description;
   String? get image => productModel!.image;
+  bool? get favorite => productModel!.favorite;
 
 }

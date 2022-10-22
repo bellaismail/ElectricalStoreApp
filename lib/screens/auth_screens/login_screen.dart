@@ -47,6 +47,7 @@ class LoginScreen extends StatelessWidget {
                           hint: "xxx@example.com",
                           textInputType: TextInputType.emailAddress,
                           controller: emailController,
+                          fieldTextDirection: provider.emailTextDirection,
                           validationFun: (val) {
                             if (val != null) {
                               if (val.isEmpty) {
@@ -61,20 +62,21 @@ class LoginScreen extends StatelessWidget {
                             }
                           },
                           onChangeFun: (val){
-                            provider.onChangeFun(context, val);
+                            provider.emailOnChangeFun(context, val);
                           },
                         ),
                         LoginTextFieldWidget(
                           hint: "ادخل كلمه السر",
                           textInputType: TextInputType.visiblePassword,
                           controller: passwordController,
+                          fieldTextDirection: provider.passwordTextDirection,
                           validationFun: (val) {
                             if (val == null || val.isEmpty) {
                               return "can't be Empty";
                             }
                           },
                           onChangeFun: (val){
-                            provider.onChangeFun(context, val);
+                            provider.passwordOnChangeFun(context, val);
                           },
                         ),
                         Padding(

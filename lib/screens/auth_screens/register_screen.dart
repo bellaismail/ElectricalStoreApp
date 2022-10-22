@@ -47,6 +47,7 @@ class RegisterScreen extends StatelessWidget {
                         hint: "الاسم",
                         textInputType: TextInputType.name,
                         controller: nameController,
+                        fieldTextDirection: provider.nameTextDirection,
                         validator: (val) {
                           if (val != null) {
                             if (val.isEmpty) {
@@ -60,12 +61,16 @@ class RegisterScreen extends StatelessWidget {
                             return null;
                           }
                         },
+                        onChangeFun: (val) {
+                          provider.nameOnChangeFun(context, val);
+                        },
                       ),
                       RegisterTextFieldWidget(
                         hint: "xxx@example.com",
                         textInputType: TextInputType.emailAddress,
                         suffixIcon: Icons.alternate_email_rounded,
                         controller: emailController,
+                        fieldTextDirection: provider.emailTextDirection,
                         validator: (val) {
                           // provider.emailValidator(val);
                           if (val != null) {
@@ -80,14 +85,17 @@ class RegisterScreen extends StatelessWidget {
                             return "can't be empty";
                           }
                         },
+                        onChangeFun: (val) {
+                          provider.emailOnChangeFun(context, val);
+                        },
                       ),
                       RegisterTextFieldWidget(
                         hint: "كلمه السر",
                         textInputType: TextInputType.visiblePassword,
                         suffixIcon: provider.passwordIcon,
                         controller: passwordController,
+                        fieldTextDirection: provider.passTextDirection,
                         validator: (val) {
-                          // provider.passwordValidator(val);
                           if (val != null) {
                             if (val.length < 8) {
                               return "shouldn't be less than 8 char";
@@ -99,12 +107,16 @@ class RegisterScreen extends StatelessWidget {
                         iconButtonFun: () {
                           provider.changePasswordIcon();
                         },
+                        onChangeFun: (val) {
+                          provider.passwordOnChangeFun(context, val);
+                        },
                       ),
                       RegisterTextFieldWidget(
                         hint: "تأكيد كلمه السر",
                         textInputType: TextInputType.visiblePassword,
                         suffixIcon: provider.confirmIcon,
                         controller: confirmController,
+                        fieldTextDirection: provider.confirmTextDirection,
                         validator: (val) {
                           if (val != null) {
                             if (confirmController.text !=
@@ -115,6 +127,9 @@ class RegisterScreen extends StatelessWidget {
                         },
                         iconButtonFun: () {
                           provider.changeConfirmIcon();
+                        },
+                        onChangeFun: (val) {
+                          provider.confirmOnChangeFun(context, val);
                         },
                       ),
                       Padding(

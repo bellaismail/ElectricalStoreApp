@@ -29,55 +29,36 @@ class AuthTopClipPathWidget extends StatelessWidget {
           child: CustomPaint(
             child: Container(
               height: orient == Orientation.portrait? 300: 200,
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:  kDefaultPadding),
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                    color: kBackgroundColor,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black45,
-                        offset: Offset(5, 0),
-                        blurRadius: 2,
-                      ),
-                    ]
-                  ),
-                ),
-              ),
+              alignment: Alignment.centerRight,
             ),
             painter: _Painter(),
           ),
         ),
+        Positioned(
+          top: 30,
+          right: 0,
+          child: CustomPaint(
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 80,
+              width: 150,
+              child: Padding(
+                padding: const EdgeInsets.only(right:  kDefaultPadding / 2, top: 10.0),
+                child: Text(
+                  text,
+                  style: const TextStyle(
+                      color: kBackgroundColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+            ),
+            painter: _Painter3(),
+          ),
+        ),
       ],
     );
-  }
-}
-
-class _MoveClipper extends CustomClipper<Path> {
-  @override
-  getClip(Size size) {
-    Path path = Path();
-    double w = size.width;
-    double h = size.height;
-
-    path
-      ..lineTo(0, h - 30)
-      ..quadraticBezierTo(w / 4, h - 60, w * .75, h - 10)
-      ..quadraticBezierTo(w * .85, h, w, h - 10)
-      ..lineTo(w, 0)
-      ..close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper oldClipper) {
-    // TODO: implement shouldReclip
-    throw UnimplementedError();
   }
 }
 
@@ -148,6 +129,32 @@ class _Painter2 extends CustomPainter {
     Paint paint = Paint()..color = kTextColor;
 
 
+    canvas.drawPath(_path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+class _Painter3 extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Path _path = Path();
+    double w = size.width;
+    double h = size.height;
+
+    _path
+    ..moveTo(w , h)
+    ..lineTo(w -200, h )
+    ..lineTo(w - 160, h / 1.6)
+    ..lineTo(w -200, h / 3.7)
+    ..lineTo(w , h / 3.5)
+    ..close();
+
+
+    Paint paint = Paint()..color = Colors.redAccent;
     canvas.drawPath(_path, paint);
   }
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:store_app2/view_models/product_card_widget_view_model.dart';
+import 'package:provider/provider.dart';
+import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
 
 import '../../constant.dart';
-import 'package:provider/provider.dart';
+import '../../view_models/favorite_screen_view_moedel.dart';
 
 class ProductCardWidget extends StatelessWidget {
   ProductCardWidget({
@@ -21,7 +22,7 @@ class ProductCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    ProductCardWidgetViewModel productCardWidgetViewModel = ProductCardWidgetViewModel();
+    var favoriteProvider = Provider.of<FavoriteScreenViewModel>(context);
     return InkWell(
       onTap: onTapFun,
       child: Container(
@@ -52,8 +53,7 @@ class ProductCardWidget extends StatelessWidget {
               top: 0.0,
               bottom: 0.0,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 width: 200.0,
                 height: 160.0,
                 child: Column(
@@ -65,8 +65,27 @@ class ProductCardWidget extends StatelessWidget {
                         : Expanded(
                             child: Image.network("${productModel!.image}"),
                           ),
-                    FavoriteIcon(
-                        onPressedFun: (){}),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        favoriteAndAddIcon(
+                          iconData: productModel!.favorite  == false
+                              ? Icons.favorite_border
+                              : Icons.favorite,
+                          onPressedFun: () {
+                            favoriteProvider.addProductToFavorite(
+                              productViewModel: productModel,
+                            );
+                          },
+                        ),
+                        favoriteAndAddIcon(
+                          iconData: Icons.add,
+                          onPressedFun: () {
+                            print("****add icon****");
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -119,26 +138,24 @@ class ProductCardWidget extends StatelessWidget {
   }
 }
 
-class FavoriteIcon extends StatefulWidget {
+class favoriteAndAddIcon extends StatelessWidget {
+  favoriteAndAddIcon({
+    this.iconData,
+    this.onPressedFun,
+  });
 
-  FavoriteIcon({this.onPressedFun,});
   Function()? onPressedFun;
+  final IconData? iconData;
 
-  @override
-  State<FavoriteIcon> createState() => _FavoriteIconState();
-}
-
-class _FavoriteIconState extends State<FavoriteIcon> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: (){},
-      icon: const Icon(
-        Icons.favorite_border,
+      onPressed: onPressedFun,
+      icon: Icon(
+        iconData,
         color: kPrimaryColor,
         size: 26.0,
       ),
     );
   }
 }
-

@@ -1,6 +1,7 @@
 class ProductModel {
   int? id, price;
   String? title, subTitle, description, image;
+  bool? favorite;
 
   ProductModel({
     this.id,
@@ -9,6 +10,7 @@ class ProductModel {
     this.subTitle,
     this.description,
     this.image,
+    this.favorite = false,
   });
 
   ProductModel.fromJSON(Map<String, dynamic>json){
@@ -18,6 +20,7 @@ class ProductModel {
     subTitle = json["subTitle"];
     description = json["description"];
     image = json["image"];
+    favorite = json["favorite"];
   }
 
   Map<String, dynamic>toJSON(){
@@ -28,6 +31,7 @@ class ProductModel {
       "subTitle" : subTitle,
       "description" : description,
       "image" : image,
+      "favorite": favorite,
     };
   }
 
