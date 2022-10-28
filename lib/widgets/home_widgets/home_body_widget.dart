@@ -8,7 +8,8 @@ import 'package:store_app2/view_models/product_view_model.dart';
 import '../home_widgets/product_card_widget.dart';
 
 class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
-  HomeBodyViewModel homeBodyViewModel = HomeBodyViewModel(repository: ProductTestRepo());
+  HomeBodyViewModel homeBodyViewModel = HomeBodyViewModel(
+      repository: ProductTestRepo());
 
   @override
   Widget build(BuildContext context) {

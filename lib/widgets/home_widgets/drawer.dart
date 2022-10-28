@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:store_app2/constant.dart';
+import 'package:store_app2/repositories/user_repositories/user_repo_firebase.dart';
 import 'package:store_app2/view_models/drawer_view_model.dart';
+import 'package:store_app2/view_models/user_view_model.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -36,27 +38,57 @@ class DrawerWidget extends StatelessWidget {
 }
 
 class HeaderDrawerWidget extends StatelessWidget {
+  DrawerViewModel drawerViewModel =
+      DrawerViewModel(userRepository: UserRepoFirebase());
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: DrawerHeader(
-        child: Column(
-          children: const [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC3JJLb6CKEw283Ga_WnBvEHoGa19hApG-Bg&usqp=CAU",
-              ),
-            ),
-            Text(
-              "3m elanas",
-            ),
-            Text(
-              "3m elanas@yahoo.com",
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
+        child: StreamBuilder(
+          stream: drawerViewModel.getUserData().asStream(),
+          builder: (context, AsyncSnapshot<UserViewModel> snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        child: Container(
+                          alignment: Alignment.topCenter,
+                          margin: const EdgeInsets.only(top: 50),
+                          width: double.infinity - 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.6),
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(75.0),
+                              bottomRight: Radius.circular(75.0),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt_outlined,
+                            color: Colors.white,
+                            size: 35,
+                          ),
+                        ),
+                        backgroundImage: NetworkImage(
+                          "${snapshot.data!.image}",
+                        ),
+                      ),
+                      Text(
+                        "${snapshot.data!.name}",
+                      ),
+                      Text(
+                        "${snapshot.data!.email}",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  );
+          },
         ),
       ),
     );
@@ -78,7 +110,9 @@ class BodyDrawerWidget extends StatelessWidget {
               itemBuilder: (context, index) => BodyDrawerRowWidget(
                 text: drawerRowList[index]["text"],
                 icon: drawerRowList[index]["icon"],
-                onTapFun: drawerRowList[index]["onTapFun"] == null ?null :drawerRowList[index]["onTapFun"],
+                onTapFun: drawerRowList[index]["onTapFun"] == null
+                    ? null
+                    : drawerRowList[index]["onTapFun"],
               ),
             ),
           ),

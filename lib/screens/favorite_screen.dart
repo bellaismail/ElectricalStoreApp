@@ -50,21 +50,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Icon(
-                          Icons.circle,
-                          size: _pointOne,
-                          color: Colors.white,
-                        ),
-                        Icon(
-                          Icons.circle,
-                          size: _pointTwo,
-                          color: Colors.white,
-                        ),
-                        Icon(
-                          Icons.circle,
-                          size: _pointThree,
-                          color: Colors.white,
-                        ),
+                        Icon(Icons.circle, size: _pointOne, color: Colors.white),
+                        Icon(Icons.circle, size: _pointTwo, color: Colors.white),
+                        Icon(Icons.circle, size: _pointThree, color: Colors.white),
                       ],
                     ),
                   ),
@@ -256,7 +244,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           _pointThree = 10.0,
         });
   }
-
   Future<void> pointTwo() async {
     await Future.delayed(const Duration(seconds: 1)).then((value) => {
           _pointOne = 10.0,
@@ -264,7 +251,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           _pointThree = 10.0,
         });
   }
-
   Future<void> pointThree() async {
     await Future.delayed(const Duration(seconds: 1)).then((value) => {
           _pointOne = 10.0,
@@ -281,143 +267,3 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 }
-
-/*
-* Stack(
-              children: [
-                Container(
-                  height: size.height,
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(top: 100.0),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(25.0),
-                      topLeft: Radius.circular(25.0),
-                    ),
-                  ),
-                ),
-                ListView.builder(
-                  itemCount: provider.favoriteList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: kDefaultPadding,
-                        vertical: kDefaultPadding / 2,
-                      ),
-                      height: 190.0,
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          Container(
-                            height: 166.0,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(40.0),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 15.0,
-                                  offset: Offset(0, 15),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            left: 0.0,
-                            top: 0.0,
-                            bottom: 0.0,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: kDefaultPadding),
-                              width: 200.0,
-                              height: 160.0,
-                              child: Column(
-                                children: [
-                                  (homeBodyViewModel.getDataConnectionEnum() ==
-                                          DataConnectionEnum.localData)
-                                      ? Expanded(
-                                          child: Image.asset(
-                                              "${provider.favoriteList[index].image}"),
-                                        )
-                                      : Expanded(
-                                          child: Image.network(
-                                              "${provider.favoriteList[index].image}"),
-                                        ),
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceEvenly,
-                                  //   children: [
-                                  //     favoriteAndAddIcon(
-                                  //       iconData: Icons.favorite_border,
-                                  //       onPressedFun: () {
-                                  //         favoriteProvider.addProductToFavorite(
-                                  //           productViewModel: productModel,
-                                  //         );
-                                  //       },
-                                  //     ),
-                                  //     favoriteAndAddIcon(
-                                  //       iconData: Icons.add,
-                                  //       onPressedFun: () {
-                                  //         print("****add icon****");
-                                  //       },
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            right: 0.0,
-                            bottom: 0.0,
-                            child: SizedBox(
-                              height: 136.0,
-                              width: size.width - 200.0,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: kDefaultPadding),
-                                    child: Text(
-                                      "${provider.favoriteList[index].title}",
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: kDefaultPadding),
-                                    child: Text(
-                                      "${provider.favoriteList[index].subTitle}",
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                  ),
-                                  const Expanded(child: SizedBox()),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        bottom: kDefaultPadding),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: kDefaultPadding * 1.5, //30 px
-                                      vertical: kDefaultPadding / 4, //5 px
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: kSecondaryColor,
-                                      borderRadius: BorderRadius.circular(22.0),
-                                    ),
-                                    child: Text(
-                                        "السعر \$${provider.favoriteList[index].price}"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-* */

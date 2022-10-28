@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/repositories/user_repositories/abstract_user_repo.dart';
@@ -9,14 +10,8 @@ import 'package:store_app2/screens/auth_screens/login_screen.dart';
 import 'package:store_app2/screens/home_screen.dart';
 import 'package:store_app2/view_models/login_views_models/login_screen_view_model.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
-import 'package:provider/provider.dart';
 
 class UserRepoFirebase extends UserRepository {
-  @override
-  Future<UserModel> getCurrentUserInfo() {
-    throw UnimplementedError();
-  }
-
   @override
   String getCurrentUserId() {
     String? userId;
@@ -106,12 +101,12 @@ class UserRepoFirebase extends UserRepository {
       provider.changeSpinner(true);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-        email: userModel.email!,
-        password: userModel.password!,
-      )
+            email: userModel.email!,
+            password: userModel.password!,
+          )
           .then((value) => {
-        Get.off(const HomeScreen()),
-      });
+                Get.off(const HomeScreen()),
+              });
       provider.changeSpinner(false);
     } on FirebaseAuthException catch (e) {
       provider.changeSpinner(false);
@@ -121,24 +116,36 @@ class UserRepoFirebase extends UserRepository {
           "هذا البريد غير موجود",
           backgroundColor: Colors.orangeAccent,
         );
-      } else if(e.code == "wrong-password"){
+      } else if (e.code == "wrong-password") {
         Get.snackbar(
           "خطأ",
           "قد يكون البريد او كلمه السر غير صحيحين",
           backgroundColor: Colors.orangeAccent,
         );
-      }else{
+      } else {
         print('***${e.code}///');
       }
-    }catch (e) {
+    } catch (e) {
       provider.changeSpinner(false);
       throw Exception("*** SomeThing Wrong on signOutFun ${e.runtimeType} ***");
     }
   }
+
+  @override
+  Future<UserModel> getCurrentUserInfo({required String userDocId}) async {
+    CollectionReference col =
+        FirebaseFirestore.instance.collection("UsersInfo");
+    var data;
+    try {
+      data = await col.doc(userDocId).get();
+    } catch (e) {
+      print("=== SomeThing Error on getCurrentUserInfoFun ${e.runtimeType} ===");
+    }
+    return UserModel(
+      name: data["name"],
+      email: data["email"],
+      image: data["image"],
+      currentUserId: getCurrentUserId()
+    );
+  }
 }
-
-
-
-/*
-*
-* */

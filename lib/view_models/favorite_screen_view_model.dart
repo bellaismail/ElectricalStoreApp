@@ -24,6 +24,10 @@ class FavoriteScreenViewModel with ChangeNotifier {
         .removeProductFromFavoriteList(
             context: context, productViewModel: productViewModel);
 
+    /*
+    * must add function that change favorite icon on home_body_widget to un favorite icon
+    * */
+
     notifyListeners();
   }
 
