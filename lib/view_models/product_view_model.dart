@@ -12,4 +12,6 @@ class ProductViewModel{
   String? get image => productModel!.image;
   bool? get favorite => productModel!.favorite;
 
+  set setFavorite(bool fav) => productModel!.favorite = fav;
+
 }

@@ -9,7 +9,7 @@ class  DrawerViewModel{
     {"text": "حسابك", "icon" : Icons.person},
     {"text": "عربتك", "icon" : Icons.shopping_cart},
     {"text": "المفضله", "icon" : Icons.favorite, "onTapFun" : (){
-      Get.to(const FavoriteScreen());
+      Get.to(FavoriteScreen());
     }},
     {"text": "الاعدادات", "icon" : Icons.settings_rounded},
     {"text": "اعرف عننا", "icon" : Icons.read_more_rounded},

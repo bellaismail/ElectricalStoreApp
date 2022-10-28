@@ -1,17 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:store_app2/repositories/product_repositories/abstract_product_repo.dart';
+import 'package:store_app2/view_models/product_view_model.dart';
 
 class ProductCardWidgetViewModel with ChangeNotifier{
 
-  // IconData? gIconData = Icons.favorite_border;
-  // changeFavoriteIcon(/*IconData iconData*/){
-  //   if(gIconData == Icons.favorite_border){
-  //     gIconData = Icons.favorite;
-  //     print("**********convert1//////////////////");
-  //   }else{
-  //     gIconData = Icons.favorite_border;
-  //     print("**********convert2//////////////////");
-  //   }
-  //   notifyListeners();
-  // }
 }

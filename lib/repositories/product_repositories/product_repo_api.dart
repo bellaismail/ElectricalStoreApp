@@ -1,3 +1,4 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/models/product_model.dart';
 import 'package:store_app2/repositories/product_repositories/abstract_product_repo.dart';
@@ -33,6 +34,24 @@ class ProductAPIRepo extends ProductRepository {
   @override
   Future<List<ProductViewModel>> getProductToFavorites() {
     // TODO: implement getProductToFavorites
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> favoriteIcon({required BuildContext context, ProductViewModel? productViewModel}) {
+    // TODO: implement favoriteIcon
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ProductViewModel>> getFavoriteList({required BuildContext context}) {
+    // TODO: implement getFavoriteList
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeProductFromFavoriteList({required BuildContext context, required ProductViewModel productViewModel}) {
+    // TODO: implement removeProductFromFavoriteList
     throw UnimplementedError();
   }
 }

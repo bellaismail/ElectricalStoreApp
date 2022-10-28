@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/models/product_model.dart';
 import 'package:store_app2/repositories/product_repositories/abstract_product_repo.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
+import 'package:flutter/material.dart';
 
-class HomeBodyViewModel {
+class HomeBodyViewModel with ChangeNotifier{
   HomeBodyViewModel({this.repository});
   ProductRepository? repository;
   List<ProductViewModel> productList = [];
@@ -15,8 +17,19 @@ class HomeBodyViewModel {
         .toList();
     return productList;
   }
-
   DataConnectionEnum? getDataConnectionEnum(){
     return repository!.dataConnectionEnum;
   }
+
+  Future<void> favoriteFunction({required BuildContext context, ProductViewModel? productViewModel, ProductRepository? productRepository}) async{
+    if(!productViewModel!.favorite!){
+      productViewModel.setFavorite = true;
+      await productRepository!.favoriteIcon(context: context, productViewModel: productViewModel);
+    }else{
+      productViewModel.setFavorite = false;
+      await productRepository!.removeProductFromFavoriteList(context: context, productViewModel: productViewModel);
+    }
+    notifyListeners();
+  }
+
 }

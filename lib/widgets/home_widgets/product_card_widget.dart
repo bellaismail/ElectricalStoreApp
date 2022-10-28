@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
 
 import '../../constant.dart';
-import '../../view_models/favorite_screen_view_moedel.dart';
 
 class ProductCardWidget extends StatelessWidget {
   ProductCardWidget({
@@ -12,17 +9,20 @@ class ProductCardWidget extends StatelessWidget {
     this.productModel,
     this.onTapFun,
     this.dataConnectionEnum,
+    this.favorite,
+    this.favoriteOnPressedFun,
   });
 
   final int? itemIndex;
   final ProductViewModel? productModel;
   final Function()? onTapFun;
   final DataConnectionEnum? dataConnectionEnum;
+  final Function()? favoriteOnPressedFun;
+  final bool? favorite;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var favoriteProvider = Provider.of<FavoriteScreenViewModel>(context);
     return InkWell(
       onTap: onTapFun,
       child: Container(
@@ -53,7 +53,8 @@ class ProductCardWidget extends StatelessWidget {
               top: 0.0,
               bottom: 0.0,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 width: 200.0,
                 height: 160.0,
                 child: Column(
@@ -69,20 +70,14 @@ class ProductCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         favoriteAndAddIcon(
-                          iconData: productModel!.favorite  == false
-                              ? Icons.favorite_border
-                              : Icons.favorite,
-                          onPressedFun: () {
-                            favoriteProvider.addProductToFavorite(
-                              productViewModel: productModel,
-                            );
-                          },
+                          iconData: favorite!
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          onPressedFun: favoriteOnPressedFun,
                         ),
                         favoriteAndAddIcon(
                           iconData: Icons.add,
-                          onPressedFun: () {
-                            print("****add icon****");
-                          },
+                          onPressedFun: () {},
                         ),
                       ],
                     ),

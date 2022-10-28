@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
-import 'package:store_app2/repositories/product_repositories/product_repo_api.dart';
 import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
 import 'package:store_app2/screens/details_screen.dart';
-import 'package:store_app2/view_models/body_view_model.dart';
+import 'package:store_app2/view_models/home_body_view_model.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
-
 import '../home_widgets/product_card_widget.dart';
 
 class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
-  HomeBodyViewModel homeBodyViewModel =
-      HomeBodyViewModel(repository: ProductTestRepo()/*APIRepo()*/);
+  HomeBodyViewModel homeBodyViewModel = HomeBodyViewModel(repository: ProductTestRepo());
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<HomeBodyViewModel>(context);
     return SafeArea(
       child: Column(
         children: [
@@ -50,13 +49,21 @@ class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
                                 MaterialPageRoute(
                                   builder: (context) => DetailsScreen(
                                     productViewModel: snapshot.data![index],
-                                    dataConnectionEnum: homeBodyViewModel.getDataConnectionEnum(),
+                                    dataConnectionEnum: homeBodyViewModel
+                                        .getDataConnectionEnum(),
                                   ),
                                 ),
                               );
                             },
-                            dataConnectionEnum:
-                                homeBodyViewModel.getDataConnectionEnum(),
+                            dataConnectionEnum: homeBodyViewModel.getDataConnectionEnum(),
+                            favorite: snapshot.data![index].favorite,
+                            favoriteOnPressedFun: () {
+                              provider.favoriteFunction(
+                                context: context,
+                                productViewModel: snapshot.data![index],
+                                productRepository: ProductTestRepo(),
+                              );
+                            },
                           );
                         },
                       );
