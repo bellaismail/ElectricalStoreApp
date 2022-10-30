@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/models/product_model.dart';
 import 'package:store_app2/repositories/product_repositories/abstract_product_repo.dart';
+import 'package:store_app2/view_models/cart_screen_view_model.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
 
 import '../../view_models/favorite_screen_view_model.dart';
@@ -25,7 +26,7 @@ class ProductTestRepo extends ProductRepository {
     var provider = Provider.of<FavoriteScreenViewModel>(context, listen: false);
     loop:
     for (int x = 0; x < provider.favoriteList.length; x++) {
-      if (provider.favoriteList[x].title == productViewModel!.title) {
+      if (provider.favoriteList[x].id == productViewModel!.id) {
         founded = true;
         break loop;
       } else {
@@ -51,5 +52,33 @@ class ProductTestRepo extends ProductRepository {
   }) async {
     var provider = Provider.of<FavoriteScreenViewModel>(context, listen: false);
     provider.favoriteList.removeWhere((element) => element.id == productViewModel.id);
+  }
+
+  @override
+  Future<void> addProductToCart({required BuildContext context ,required ProductViewModel productViewModel}) async{
+    var provider = Provider.of<CartScreenViewModel>(context, listen: false);
+    bool founded = false;
+    loop:
+    for(int x = 0; x < provider.cartList.length; x++){
+      if(provider.cartList[x].id == productViewModel.id){
+        founded = true;
+        break loop;
+      }else{
+        founded = false;
+      }
+    }
+    if(!founded){
+      provider.cartList.add(productViewModel);
+    }
+  }
+
+  @override
+  Future<void> removeProductFromCart({required BuildContext context, required ProductViewModel productViewModel}) async{
+    var provider = Provider.of<CartScreenViewModel>(context, listen: false);
+    try{
+      provider.cartList.removeWhere((element) => element.id == productViewModel.id);
+    }catch(e){
+      throw Exception("=== something Error on removeProductFRomCartFun => $e ===");
+    }
   }
 }

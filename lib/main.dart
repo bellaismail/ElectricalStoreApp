@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/screens/auth_screens/login_screen.dart';
 import 'package:store_app2/screens/home_screen.dart';
+import 'package:store_app2/view_models/cart_screen_view_model.dart';
 import 'package:store_app2/view_models/favorite_screen_view_model.dart';
 import 'package:store_app2/view_models/home_body_view_model.dart';
 import 'package:store_app2/view_models/login_views_models/login_screen_view_model.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LoginScreenViewModel()),
         ChangeNotifierProvider(create: (context) => FavoriteScreenViewModel()),
         ChangeNotifierProvider(create: (context) => HomeBodyViewModel()),
+        ChangeNotifierProvider(create: (context) => CartScreenViewModel()),
       ],
       builder: (context, child) {
         return GetMaterialApp(

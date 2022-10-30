@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
 import 'package:store_app2/screens/details_screen.dart';
 import 'package:store_app2/view_models/home_body_view_model.dart';
 import 'package:store_app2/view_models/product_view_model.dart';
+
 import '../home_widgets/product_card_widget.dart';
 
 class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
-  HomeBodyViewModel homeBodyViewModel = HomeBodyViewModel(
-      repository: ProductTestRepo());
+  HomeBodyViewModel homeBodyViewModel =
+      HomeBodyViewModel(repository: ProductTestRepo());
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +48,16 @@ class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
                             itemIndex: index,
                             productModel: snapshot.data![index],
                             onTapFun: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailsScreen(
-                                    productViewModel: snapshot.data![index],
-                                    dataConnectionEnum: homeBodyViewModel
-                                        .getDataConnectionEnum(),
-                                  ),
+                              Get.to(
+                                DetailsScreen(
+                                  productViewModel: snapshot.data![index],
+                                  dataConnectionEnum:
+                                      homeBodyViewModel.getDataConnectionEnum(),
                                 ),
                               );
                             },
-                            dataConnectionEnum: homeBodyViewModel.getDataConnectionEnum(),
+                            dataConnectionEnum:
+                                homeBodyViewModel.getDataConnectionEnum(),
                             favorite: snapshot.data![index].favorite,
                             favoriteOnPressedFun: () {
                               provider.favoriteFunction(
@@ -64,6 +65,23 @@ class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
                                 productViewModel: snapshot.data![index],
                                 productRepository: ProductTestRepo(),
                               );
+                            },
+                            addToCartOnPressedFun: () async {
+                              await provider
+                                  .addProductToCartFun(
+                                    context: context,
+                                    productViewModel: snapshot.data![index],
+                                    productRepository: ProductTestRepo(),
+                                  )
+                                  .then((value) => {
+                                    Fluttertoast.showToast(
+                                          msg: "قمت باضافه منتج جديد",
+                                          backgroundColor: kPrimaryColor,
+                                          textColor: kBackgroundColor,
+                                          gravity: ToastGravity.BOTTOM,
+                                          toastLength: Toast.LENGTH_SHORT,
+                                        ),
+                                      });
                             },
                           );
                         },

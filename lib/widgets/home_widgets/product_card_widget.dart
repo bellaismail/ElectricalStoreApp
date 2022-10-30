@@ -11,6 +11,7 @@ class ProductCardWidget extends StatelessWidget {
     this.dataConnectionEnum,
     this.favorite,
     this.favoriteOnPressedFun,
+    this.addToCartOnPressedFun,
   });
 
   final int? itemIndex;
@@ -18,6 +19,7 @@ class ProductCardWidget extends StatelessWidget {
   final Function()? onTapFun;
   final DataConnectionEnum? dataConnectionEnum;
   final Function()? favoriteOnPressedFun;
+  final Function()? addToCartOnPressedFun;
   final bool? favorite;
 
   @override
@@ -77,7 +79,7 @@ class ProductCardWidget extends StatelessWidget {
                         ),
                         favoriteAndAddIcon(
                           iconData: Icons.add,
-                          onPressedFun: () {},
+                          onPressedFun: addToCartOnPressedFun,
                         ),
                       ],
                     ),

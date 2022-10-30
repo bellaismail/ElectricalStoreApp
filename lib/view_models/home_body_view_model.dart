@@ -32,4 +32,8 @@ class HomeBodyViewModel with ChangeNotifier{
     notifyListeners();
   }
 
+  Future<void> addProductToCartFun({required BuildContext context, required ProductViewModel productViewModel, ProductRepository? productRepository}) async{
+    await productRepository!.addProductToCart(context: context, productViewModel: productViewModel);
+  }
+
 }

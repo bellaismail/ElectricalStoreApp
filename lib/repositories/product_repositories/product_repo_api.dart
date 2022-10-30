@@ -54,4 +54,16 @@ class ProductAPIRepo extends ProductRepository {
     // TODO: implement removeProductFromFavoriteList
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> addProductToCart({required BuildContext context, required ProductViewModel productViewModel}) {
+    // TODO: implement addProductToCart
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeProductFromCart({required BuildContext context, required ProductViewModel productViewModel}) {
+    // TODO: implement removeProductFromCart
+    throw UnimplementedError();
+  }
 }

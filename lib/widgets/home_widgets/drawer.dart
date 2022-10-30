@@ -50,29 +50,21 @@ class HeaderDrawerWidget extends StatelessWidget {
           stream: drawerViewModel.getUserData().asStream(),
           builder: (context, AsyncSnapshot<UserViewModel> snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? const Center(child: CircularProgressIndicator())
                 : Column(
                     children: [
                       CircleAvatar(
                         radius: 50,
                         child: Container(
-                          alignment: Alignment.topCenter,
+                          alignment: Alignment.bottomCenter,
                           margin: const EdgeInsets.only(top: 50),
                           width: double.infinity - 50,
                           height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.6),
-                            borderRadius: const BorderRadius.only(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(75.0),
                               bottomRight: Radius.circular(75.0),
                             ),
-                          ),
-                          child: const Icon(
-                            Icons.camera_alt_outlined,
-                            color: Colors.white,
-                            size: 35,
                           ),
                         ),
                         backgroundImage: NetworkImage(
@@ -84,7 +76,7 @@ class HeaderDrawerWidget extends StatelessWidget {
                       ),
                       Text(
                         "${snapshot.data!.email}",
-                        style: TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ],
                   );
@@ -110,9 +102,7 @@ class BodyDrawerWidget extends StatelessWidget {
               itemBuilder: (context, index) => BodyDrawerRowWidget(
                 text: drawerRowList[index]["text"],
                 icon: drawerRowList[index]["icon"],
-                onTapFun: drawerRowList[index]["onTapFun"] == null
-                    ? null
-                    : drawerRowList[index]["onTapFun"],
+                onTapFun: drawerRowList[index]["onTapFun"],
               ),
             ),
           ),
