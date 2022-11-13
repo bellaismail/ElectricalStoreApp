@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/repositories/user_repositories/abstract_user_repo.dart';
+
+import '../../view_models/user_view_model.dart';
 
 class UserRepoAPI extends UserRepository{
 
@@ -39,6 +42,86 @@ class UserRepoAPI extends UserRepository{
     // TODO: implement getCurrentUserInfo
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> uploadImage({required String? imagePath, required File? file}) {
+    // TODO: implement uploadImage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> signInWithFacebook({required BuildContext context}) {
+    // TODO: implement signInWithFacebook
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> signInWithGoogle({required BuildContext context}) {
+    // TODO: implement signInWithGoogle
+    throw UnimplementedError();
+  }
+
+
+  @override
+  Future<void> updateName({required UserViewModel userViewModel}) {
+    // TODO: implement updateName
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updatePassword({required UserViewModel userViewModel}) {
+    // TODO: implement updatePassword
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateEmailOnAuth(String? newEmail) {
+    // TODO: implement updateEmailOnAuth
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateEmail({required UserViewModel userViewModel, String? newEmail}) {
+    // TODO: implement updateEmail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> resetPassword({required String email}) {
+    // TODO: implement resetPassword
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> verifyEmail() {
+    // TODO: implement verifyEmail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteAccountAuth() {
+    // TODO: implement deleteAccountAuth
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteAccountFirestore() {
+    // TODO: implement deleteAccountFirestore
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> pickImageToStorage({required File file, required String? imageName}) {
+    // TODO: implement pickImageToStorage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveImagePathToFirestore({required String path}) {
+    // TODO: implement saveImagePathToFirestore
+    throw UnimplementedError();
+  }
+
 
 
 

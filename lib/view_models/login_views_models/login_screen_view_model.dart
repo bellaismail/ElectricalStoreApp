@@ -11,35 +11,48 @@ class LoginScreenViewModel with ChangeNotifier{
     spinnerOrNot? spinner = true: spinner = false;
     notifyListeners();
   }
-
   emailOnChangeFun(BuildContext context, val){
     RegExp exp = RegExp("[a-zA-Z]");
-    if(val != null){
-      if(val.isNotEmpty){
-        if(exp.hasMatch(val[val.length - 1])){
-          emailTextDirection = TextDirection.ltr;
+    if (val != null) {
+      if (val.isNotEmpty) {
+        if(val[val.length - 1] == " "){
+          if (exp.hasMatch(val[val.length - 2])) {
+            emailTextDirection = TextDirection.ltr;
+          } else {
+            emailTextDirection = TextDirection.rtl;
+          }
         }else{
-          emailTextDirection = TextDirection.rtl;
+          if (exp.hasMatch(val[val.length - 1])) {
+            emailTextDirection = TextDirection.ltr;
+          } else {
+            emailTextDirection = TextDirection.rtl;
+          }
         }
       }
     }
     notifyListeners();
   }
-
   passwordOnChangeFun(BuildContext context, val){
     RegExp exp = RegExp("[a-zA-Z]");
-    if(val != null){
-      if(val.isNotEmpty){
-        if(exp.hasMatch(val[val.length - 1])){
-          passwordTextDirection = TextDirection.ltr;
+    if (val != null) {
+      if (val.isNotEmpty) {
+        if(val[val.length - 1] == " "){
+          if (exp.hasMatch(val[val.length - 2])) {
+            passwordTextDirection = TextDirection.ltr;
+          } else {
+            passwordTextDirection = TextDirection.rtl;
+          }
         }else{
-          passwordTextDirection = TextDirection.rtl;
+          if (exp.hasMatch(val[val.length - 1])) {
+            passwordTextDirection = TextDirection.ltr;
+          } else {
+            passwordTextDirection = TextDirection.rtl;
+          }
         }
       }
     }
     notifyListeners();
   }
-
   Future<void> signIn(BuildContext context, {required UserRepository userRepository,required UserModel userModel}) async{
     userRepository.signIn(userModel, context);
   }

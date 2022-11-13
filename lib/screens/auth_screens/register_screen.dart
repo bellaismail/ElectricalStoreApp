@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,6 @@ import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/repositories/user_repositories/user_repo_firebase.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
 import 'package:store_app2/widgets/register_widgets/snak_bar_widget.dart';
-
 import '../../constant.dart';
 import '../../widgets/login_widgets/socail_login_icon_widget.dart';
 import '../../widgets/register_widgets/auth_top_clipPath_widget.dart';
@@ -31,7 +31,7 @@ class RegisterScreen extends StatelessWidget {
       appBar: null,
       body: Column(
         children: [
-          AuthTopClipPathWidget(text: "انشاء حساب"),
+          // AuthTopClipPathWidget(text: "انشاء حساب"),
           Expanded(
             child: ModalProgressHUD(
               inAsyncCall: provider.spinner,
@@ -42,7 +42,9 @@ class RegisterScreen extends StatelessWidget {
                 child: Form(
                   key: _key,
                   child: ListView(
+                    physics: const BouncingScrollPhysics(),
                     children: [
+                      const SizedBox(height: 150,),
                       RegisterTextFieldWidget(
                         hint: "الاسم",
                         textInputType: TextInputType.name,
@@ -222,11 +224,22 @@ class RegisterScreen extends StatelessWidget {
                           children: <Widget>[
                             SocialLoginIconWidget(
                               imagePath: "images/google_logo.png",
-                              onTapFun: null,
+                              onTapFun: ()async{
+                                await provider.signInWithGoogle(
+                                  context: context,
+                                  userRepository: UserRepoFirebase()
+                                );
+                                // await FirebaseAuth.instance.signOut();
+                              },
                             ),
                             SocialLoginIconWidget(
                               imagePath: "images/facebook_logo.png",
-                              onTapFun: null,
+                              onTapFun: ()async{
+                                await provider.signInWithFacebook(
+                                  context: context,
+                                  userRepository: UserRepoFirebase(),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -253,33 +266,3 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 }
-
-/*
-* registerFun() async {
-  var connectivityResult = await (Connectivity().checkConnectivity());
-  if (_key.currentState!.validate()) {
-    if (connectivityResult != ConnectivityResult.wifi &&
-        connectivityResult != ConnectivityResult.mobile) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("no internet connection"),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } else {
-      print("network mood on////////////");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      ).then((value) => {
-            nameController.clear(),
-            emailController.clear(),
-            passwordController.clear(),
-            confirmController.clear(),
-          });
-    }
-  }
-}
-* */

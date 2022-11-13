@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kTextColor,
       appBar: homeAppBar(),
       body: HomeBodyWidget(),
       endDrawer: const DrawerWidget(),
@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   }
   AppBar homeAppBar(){
     return AppBar(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kTextColor,
       elevation: 0.0,
       title: const Text("مرحبا بكم بمتجر الالكترونيات"),
     );

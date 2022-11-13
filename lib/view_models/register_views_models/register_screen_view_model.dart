@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app2/models/user_model.dart';
 import 'package:store_app2/repositories/user_repositories/abstract_user_repo.dart';
-import 'package:provider/provider.dart';
-import 'package:store_app2/view_models/register_views_models/register_text_field_view_model.dart';
-import 'package:store_app2/widgets/register_widgets/register_text_field_widget.dart';
 
 class RegisterScreenViewModel with ChangeNotifier {
   bool spinner = false;
@@ -20,7 +16,6 @@ class RegisterScreenViewModel with ChangeNotifier {
     spinnerOrNot? spinner = true : spinner = false;
     notifyListeners();
   }
-
   changePasswordIcon() {
     if (passwordIcon == Icons.visibility_off_rounded) {
       passwordIcon = Icons.visibility;
@@ -29,7 +24,6 @@ class RegisterScreenViewModel with ChangeNotifier {
     }
     notifyListeners();
   }
-
   changeConfirmIcon() {
     if (confirmIcon == Icons.visibility_off_rounded) {
       confirmIcon = Icons.visibility;
@@ -41,13 +35,20 @@ class RegisterScreenViewModel with ChangeNotifier {
 
   nameOnChangeFun(BuildContext context, val){
     RegExp exp = RegExp("[a-zA-Z]");
-    if(val != null){
-      if(val.isNotEmpty){
-
-        if(exp.hasMatch(val[val.length - 1])){
-          nameTextDirection = TextDirection.ltr;
+    if (val != null) {
+      if (val.isNotEmpty) {
+        if(val[val.length - 1] == " "){
+          if (exp.hasMatch(val[val.length - 2])) {
+            nameTextDirection = TextDirection.ltr;
+          } else {
+            nameTextDirection = TextDirection.rtl;
+          }
         }else{
-          nameTextDirection = TextDirection.rtl;
+          if (exp.hasMatch(val[val.length - 1])) {
+            nameTextDirection = TextDirection.ltr;
+          } else {
+            nameTextDirection = TextDirection.rtl;
+          }
         }
       }
     }
@@ -55,13 +56,20 @@ class RegisterScreenViewModel with ChangeNotifier {
   }
   emailOnChangeFun(BuildContext context, val){
     RegExp exp = RegExp("[a-zA-Z]");
-    if(val != null){
-      if(val.isNotEmpty){
-
-        if(exp.hasMatch(val[val.length - 1])){
-          emailTextDirection = TextDirection.ltr;
+    if (val != null) {
+      if (val.isNotEmpty) {
+        if(val[val.length - 1] == " "){
+          if (exp.hasMatch(val[val.length - 2])) {
+            emailTextDirection = TextDirection.ltr;
+          } else {
+            emailTextDirection = TextDirection.rtl;
+          }
         }else{
-          emailTextDirection = TextDirection.rtl;
+          if (exp.hasMatch(val[val.length - 1])) {
+            emailTextDirection = TextDirection.ltr;
+          } else {
+            emailTextDirection = TextDirection.rtl;
+          }
         }
       }
     }
@@ -69,13 +77,20 @@ class RegisterScreenViewModel with ChangeNotifier {
   }
   passwordOnChangeFun(BuildContext context, val){
     RegExp exp = RegExp("[a-zA-Z]");
-    if(val != null){
-      if(val.isNotEmpty){
-
-        if(exp.hasMatch(val[val.length - 1])){
-          passTextDirection = TextDirection.ltr;
+    if (val != null) {
+      if (val.isNotEmpty) {
+        if(val[val.length - 1] == " "){
+          if (exp.hasMatch(val[val.length - 2])) {
+            passTextDirection = TextDirection.ltr;
+          } else {
+            passTextDirection = TextDirection.rtl;
+          }
         }else{
-          passTextDirection = TextDirection.rtl;
+          if (exp.hasMatch(val[val.length - 1])) {
+            passTextDirection = TextDirection.ltr;
+          } else {
+            passTextDirection = TextDirection.rtl;
+          }
         }
       }
     }
@@ -83,13 +98,20 @@ class RegisterScreenViewModel with ChangeNotifier {
   }
   confirmOnChangeFun(BuildContext context, val){
     RegExp exp = RegExp("[a-zA-Z]");
-    if(val != null){
-      if(val.isNotEmpty){
-
-        if(exp.hasMatch(val[val.length - 1])){
-          confirmTextDirection = TextDirection.ltr;
+    if (val != null) {
+      if (val.isNotEmpty) {
+        if(val[val.length - 1] == " "){
+          if (exp.hasMatch(val[val.length - 2])) {
+            confirmTextDirection = TextDirection.ltr;
+          } else {
+            confirmTextDirection = TextDirection.rtl;
+          }
         }else{
-          confirmTextDirection = TextDirection.rtl;
+          if (exp.hasMatch(val[val.length - 1])) {
+            confirmTextDirection = TextDirection.ltr;
+          } else {
+            confirmTextDirection = TextDirection.rtl;
+          }
         }
       }
     }
@@ -100,8 +122,13 @@ class RegisterScreenViewModel with ChangeNotifier {
     await userRepository.signUp(userModel, context);
     notifyListeners();
   }
-
   Future<void> signOut({required UserRepository userRepository})async{
     await userRepository.signOut();
+  }
+  Future<void> signInWithGoogle({UserRepository? userRepository, required BuildContext context}) async {
+    await userRepository!.signInWithGoogle(context: context);
+  }
+  Future<void> signInWithFacebook({required BuildContext context, UserRepository? userRepository}) async {
+    await userRepository!.signInWithFacebook(context: context);
   }
 }

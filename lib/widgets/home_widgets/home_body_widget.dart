@@ -10,12 +10,23 @@ import 'package:store_app2/view_models/product_view_model.dart';
 
 import '../home_widgets/product_card_widget.dart';
 
-class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
+class HomeBodyWidget extends StatefulWidget with ChangeNotifier {
+  @override
+  State<HomeBodyWidget> createState() => _HomeBodyWidgetState();
+}
+
+class _HomeBodyWidgetState extends State<HomeBodyWidget> {
   HomeBodyViewModel homeBodyViewModel =
       HomeBodyViewModel(repository: ProductTestRepo());
 
   @override
+  void initState() {
+    Provider.of<HomeBodyViewModel>(context, listen: false).getAllProductList(repository: ProductTestRepo());
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context);
     var provider = Provider.of<HomeBodyViewModel>(context);
     return SafeArea(
       child: Column(
@@ -36,61 +47,50 @@ class HomeBodyWidget extends StatelessWidget with ChangeNotifier {
                     ),
                   ),
                 ),
-                FutureBuilder(
-                  future: homeBodyViewModel.getAllProductList(),
-                  builder: (context,
-                      AsyncSnapshot<List<ProductViewModel>> snapshot) {
-                    if (snapshot.connectionState != ConnectionState.waiting) {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return ProductCardWidget(
-                            itemIndex: index,
-                            productModel: snapshot.data![index],
-                            onTapFun: () {
-                              Get.to(
-                                DetailsScreen(
-                                  productViewModel: snapshot.data![index],
-                                  dataConnectionEnum:
-                                      homeBodyViewModel.getDataConnectionEnum(),
-                                ),
-                              );
-                            },
+                provider.productList.isEmpty? const Center(child: CircularProgressIndicator(),):ListView.builder(
+                  physics: null,
+                  itemCount: provider.productList.length,
+                  itemBuilder: (context, index) {
+                    return ProductCardWidget(
+                      itemIndex: index,
+                      productModel: provider.productList[index],
+                      onTapFun: () {
+                        Get.to(
+                          DetailsScreen(
+                            productViewModel: provider.productList[index],
                             dataConnectionEnum:
-                                homeBodyViewModel.getDataConnectionEnum(),
-                            favorite: snapshot.data![index].favorite,
-                            favoriteOnPressedFun: () {
-                              provider.favoriteFunction(
-                                context: context,
-                                productViewModel: snapshot.data![index],
-                                productRepository: ProductTestRepo(),
-                              );
-                            },
-                            addToCartOnPressedFun: () async {
-                              await provider
-                                  .addProductToCartFun(
-                                    context: context,
-                                    productViewModel: snapshot.data![index],
-                                    productRepository: ProductTestRepo(),
-                                  )
-                                  .then((value) => {
-                                    Fluttertoast.showToast(
-                                          msg: "قمت باضافه منتج جديد",
-                                          backgroundColor: kPrimaryColor,
-                                          textColor: kBackgroundColor,
-                                          gravity: ToastGravity.BOTTOM,
-                                          toastLength: Toast.LENGTH_SHORT,
-                                        ),
-                                      });
-                            },
-                          );
-                        },
-                      );
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+                            homeBodyViewModel.getDataConnectionEnum(),
+                          ),
+                        );
+                      },
+                      dataConnectionEnum:
+                      homeBodyViewModel.getDataConnectionEnum(),
+                      favorite: provider.productList[index].favorite,
+                      favoriteOnPressedFun: () {
+                        provider.favoriteFunction(
+                          context: context,
+                          productViewModel: provider.productList[index],
+                          productRepository: ProductTestRepo(),
+                        );
+                      },
+                      addToCartOnPressedFun: () async {
+                        await provider
+                            .addProductToCartFun(
+                          context: context,
+                          productViewModel: provider.productList[index],
+                          productRepository: ProductTestRepo(),
+                        )
+                            .then((value) => {
+                          Fluttertoast.showToast(
+                            msg: "قمت باضافه منتج جديد",
+                            backgroundColor: kPrimaryColor,
+                            textColor: kBackgroundColor,
+                            gravity: ToastGravity.BOTTOM,
+                            toastLength: Toast.LENGTH_SHORT,
+                          ),
+                        });
+                      },
+                    );
                   },
                 ),
               ],

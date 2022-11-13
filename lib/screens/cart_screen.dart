@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
+import 'package:store_app2/screens/details_screen.dart';
 import 'package:store_app2/view_models/cart_screen_view_model.dart';
+import 'package:store_app2/view_models/home_body_view_model.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,83 +133,98 @@ class CartScreen extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: provider.cartList.length,
                         itemBuilder: (context, index) {
-                          return Dismissible(
-                            key: Key("${provider.cartList[index].id}"),
-                            onDismissed: (dir) {
-                              provider.removeProductFromCart(
-                                productRepository: ProductTestRepo(),
-                                context: context,
-                                productViewModel: provider.cartList[index],
+                          return InkWell(
+                            onTap: () {
+                              Get.to(
+                                DetailsScreen(
+                                  productViewModel: provider.cartList[index],
+                                  dataConnectionEnum:
+                                      provider.getDataConnectionEnum(
+                                    productRepository: ProductTestRepo(),
+                                  ),
+                                ),
                               );
                             },
-                            confirmDismiss: (dir) async {
-                              if (dir == DismissDirection.startToEnd) {
-                                return true;
-                              } else {
-                                return false;
-                              }
-                            },
-                            child: Card(
-                              color: kBackgroundColor,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 7.0, vertical: 10.0),
-                              elevation: 0.0,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 110,
-                                    height: 140,
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 10.0, vertical: 5.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.lightGreen.withOpacity(0.4),
-                                      borderRadius: BorderRadius.circular(16.0),
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            "${provider.cartList[index].image}"),
-                                        fit: BoxFit.contain,
+                            child: Dismissible(
+                              key: Key("${provider.cartList[index].id}"),
+                              onDismissed: (dir) {
+                                provider.removeProductFromCart(
+                                  productRepository: ProductTestRepo(),
+                                  context: context,
+                                  productViewModel: provider.cartList[index],
+                                );
+                              },
+                              confirmDismiss: (dir) async {
+                                if (dir == DismissDirection.startToEnd) {
+                                  return true;
+                                } else {
+                                  return false;
+                                }
+                              },
+                              child: Card(
+                                color: kBackgroundColor,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 7.0, vertical: 10.0),
+                                elevation: 0.0,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 110,
+                                      height: 140,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 5.0),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Colors.lightGreen.withOpacity(0.4),
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              "${provider.cartList[index].image}"),
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        Text(
-                                          "${provider.cartList[index].title}",
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18.0),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Text(
-                                            "${provider.cartList[index].price}\$",
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Text(
+                                            "${provider.cartList[index].title}",
                                             style: const TextStyle(
-                                              color: kSecondaryColor,
-                                              fontSize: 20.0,
+                                                color: Colors.black,
+                                                fontSize: 18.0),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: Text(
+                                              "${provider.cartList[index].price}\$",
+                                              style: const TextStyle(
+                                                color: kSecondaryColor,
+                                                fontSize: 20.0,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.all(15.0),
-                                    decoration: const BoxDecoration(
-                                      color: kTextColor,
-                                      shape: BoxShape.circle,
+                                    Container(
+                                      padding: const EdgeInsets.all(15.0),
+                                      decoration: const BoxDecoration(
+                                        color: kTextColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Text(
+                                        "x1",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
-                                    child: const Text(
-                                      "x1",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -310,8 +327,8 @@ class EmptyCartWidget extends StatelessWidget {
 }
 
 class EmptyCartWidgetPainter extends CustomPainter {
-
   EmptyCartWidgetPainter({this.color});
+
   final Color? color;
 
   @override

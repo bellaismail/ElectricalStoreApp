@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app2/screens/auth_screens/login_screen.dart';
 import 'package:store_app2/screens/home_screen.dart';
 import 'package:store_app2/view_models/cart_screen_view_model.dart';
+import 'package:store_app2/view_models/drawer_view_model.dart';
 import 'package:store_app2/view_models/favorite_screen_view_model.dart';
 import 'package:store_app2/view_models/home_body_view_model.dart';
 import 'package:store_app2/view_models/login_views_models/login_screen_view_model.dart';
@@ -15,6 +16,11 @@ import 'package:store_app2/view_models/login_views_models/login_text_field_view_
 import 'package:store_app2/view_models/product_card_widget_view_model.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
 import 'package:store_app2/view_models/register_views_models/register_text_field_view_model.dart';
+import 'package:store_app2/view_models/setting_screens_view_model/change_email_screen_view_model.dart';
+import 'package:store_app2/view_models/setting_screens_view_model/change_name_screen_view_model.dart';
+import 'package:store_app2/view_models/setting_screens_view_model/change_password_screen_view_model.dart';
+import 'package:store_app2/view_models/setting_screens_view_model/forget_password_view_model.dart';
+import 'package:store_app2/view_models/setting_screens_view_model/home_setting_view_mode.dart';
 import 'package:store_app2/widgets/home_widgets/home_body_widget.dart';
 
 import 'constant.dart';
@@ -41,6 +47,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => FavoriteScreenViewModel()),
         ChangeNotifierProvider(create: (context) => HomeBodyViewModel()),
         ChangeNotifierProvider(create: (context) => CartScreenViewModel()),
+        ChangeNotifierProvider(create: (context) => HomeSettingViewModel()),
+        ChangeNotifierProvider(create: (context) => DrawerViewModel()),
+        ChangeNotifierProvider(create: (context) => ChangeNameScreenViewModel()),
+        ChangeNotifierProvider(create: (context) => ChangeEmailScreenViewModel()),
+        ChangeNotifierProvider(create: (context) => ChangePasswordScreenViewModel()),
+        ChangeNotifierProvider(create: (context) => ForgetPasswordViewModel()),
       ],
       builder: (context, child) {
         return GetMaterialApp(

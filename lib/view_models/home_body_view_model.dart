@@ -10,12 +10,19 @@ class HomeBodyViewModel with ChangeNotifier{
   ProductRepository? repository;
   List<ProductViewModel> productList = [];
 
-  Future<List<ProductViewModel>> getAllProductList() async {
+  // Future<List<ProductViewModel>> getAllProductList() async {
+  //   List<ProductModel> productModelList = await repository!.getProductList();
+  //   productList = productModelList
+  //       .map((productModel) => ProductViewModel(productModel: productModel))
+  //       .toList();
+  //   return productList;
+  // }
+  getAllProductList({required ProductRepository? repository}) async {
     List<ProductModel> productModelList = await repository!.getProductList();
     productList = productModelList
         .map((productModel) => ProductViewModel(productModel: productModel))
         .toList();
-    return productList;
+    notifyListeners();
   }
   DataConnectionEnum? getDataConnectionEnum(){
     return repository!.dataConnectionEnum;

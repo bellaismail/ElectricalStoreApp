@@ -33,7 +33,6 @@ class RegisterTextFieldWidget extends StatefulWidget {
 class _RegisterTextFieldWidgetState extends State<RegisterTextFieldWidget> {
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<RegisterTextFieldViewModel>(context);
     return Padding(
       padding: const EdgeInsets.all(kDefaultPadding / 2),
       child: TextFormField(

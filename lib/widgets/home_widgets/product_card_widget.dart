@@ -56,18 +56,18 @@ class ProductCardWidget extends StatelessWidget {
               bottom: 0.0,
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 width: 200.0,
                 height: 160.0,
                 child: Column(
                   children: [
                     (dataConnectionEnum == DataConnectionEnum.localData)
                         ? Expanded(
-                            child: Image.asset("${productModel!.image}"),
-                          )
+                      child: Image.asset("${productModel!.image}"),
+                    )
                         : Expanded(
-                            child: Image.network("${productModel!.image}"),
-                          ),
+                      child: Image.network("${productModel!.image}"),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

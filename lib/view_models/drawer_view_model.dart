@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import 'package:store_app2/repositories/user_repositories/abstract_user_repo.dart';
 import 'package:store_app2/screens/cart_screen.dart';
 import 'package:store_app2/screens/favorite_screen.dart';
-import 'package:store_app2/screens/home_screen.dart';
-import 'package:store_app2/screens/profile_screen.dart';
+import 'package:store_app2/screens/setting_screens/home_setting_screen.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
 import 'package:store_app2/view_models/user_view_model.dart';
 
@@ -12,25 +11,14 @@ import '../models/user_model.dart';
 import '../repositories/user_repositories/user_repo_firebase.dart';
 import '../screens/about_screen.dart';
 
-class DrawerViewModel {
-  DrawerViewModel({this.userRepository});
-
-  UserRepository? userRepository;
+class DrawerViewModel with ChangeNotifier{
   List<Map<String, dynamic>> drawerRowList = [
-    // {
-    //   "text": "حسابك",
-    //   "icon": Icons.person,
-    //   "onTapFun": (){
-    //     Get.back();
-    //     Get.to(const ProfileScreen());
-    //   }
-    // },
     {
       "text": "عربتك",
       "icon": Icons.shopping_cart,
       "onTapFun": (){
         Get.back();
-        Get.to(const CartScreen());
+        Get.to(CartScreen());
       }
     },
     {
@@ -52,6 +40,10 @@ class DrawerViewModel {
     {
       "text": "الاعدادات",
       "icon": Icons.settings_rounded,
+      "onTapFun": (){
+        Get.back();
+        Get.to(HomeSettingScreen());
+      }
     },
     {
       "text": "تسجيل الخروج",
@@ -63,10 +55,17 @@ class DrawerViewModel {
     },
   ];
 
-  Future<UserViewModel> getUserData() async {
-    String userDocId = userRepository!.getCurrentUserId();
-    UserModel userModel =
-        await userRepository!.getCurrentUserInfo(userDocId: userDocId);
-    return UserViewModel(userModel: userModel);
+  UserViewModel? userViewModel;
+  Future<void> getUserData({required UserRepository userRepository}) async {
+    String userDocId = userRepository.getCurrentUserId();
+    UserModel userModel = await userRepository.getCurrentUserInfo(userDocId: userDocId);
+    userViewModel =  UserViewModel(userModel: userModel);
+    notifyListeners();
+  }
+
+  profileImage({required UserViewModel userViewModel}){
+    return userViewModel.image!.isEmpty? const AssetImage("images/profile.png"):NetworkImage(
+      "${userViewModel.image}",
+    );
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'image_model.dart';
+
 class UserModel {
   String? name;
   String? email;

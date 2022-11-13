@@ -36,4 +36,8 @@ class CartScreenViewModel with ChangeNotifier {
     }
     return totalPrice;
   }
+
+  DataConnectionEnum getDataConnectionEnum({required ProductRepository productRepository,}){
+    return productRepository.dataConnectionEnum!;
+  }
 }
