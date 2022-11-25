@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
+import 'package:store_app2/screens/cart_screen.dart';
 import 'package:store_app2/screens/details_screen.dart';
 import 'package:store_app2/view_models/favorite_screen_view_model.dart';
 import 'package:store_app2/view_models/home_body_view_model.dart';
@@ -13,54 +14,24 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  double? _pointOne = 20.0;
-  double? _pointTwo = 10.0;
-  double? _pointThree = 10.0;
-  bool loopEnd = false;
 
   @override
   void initState() {
-    fontSizeFun();
+    var provider = Provider.of<FavoriteScreenViewModel>(context, listen: false);
+    provider.getFavoriteList();
     super.initState();
   }
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var provider = Provider.of<FavoriteScreenViewModel>(context);
-    HomeBodyViewModel homeBodyViewModel = HomeBodyViewModel(repository: ProductTestRepo());
-
+    HomeBodyViewModel homeBodyViewModel =
+        HomeBodyViewModel(repository: ProductTestRepo());
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: provider.favoriteList.isEmpty? kBackgroundColor:kPrimaryColor,
       appBar: appBar(provider),
       body: provider.favoriteList.isEmpty
-          ? loopEnd
-              ? const Center(
-                  child: Text(
-                    "فارغه",
-                    style: TextStyle(
-                      color: kBackgroundColor,
-                      fontSize: 25.0,
-                    ),
-                  ),
-                )
-              : Center(
-                  child: SizedBox(
-                    width: 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(Icons.circle, size: _pointOne, color: Colors.white),
-                        Icon(Icons.circle, size: _pointTwo, color: Colors.white),
-                        Icon(Icons.circle, size: _pointThree, color: Colors.white),
-                      ],
-                    ),
-                  ),
-                )
+          ? const EmptyCartWidget()
           : Stack(
               children: [
                 Container(
@@ -90,6 +61,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       },
                       child: Dismissible(
                         key: Key(provider.favoriteList[index].id.toString()),
+                        movementDuration: const Duration(milliseconds: 600),
                         onDismissed: (direction) async {
                           await provider.removeFromFavorite(
                             context: context,
@@ -98,10 +70,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           );
                         },
                         confirmDismiss: (DismissDirection dm) async {
-                          if (dm == DismissDirection.startToEnd) {
+                          await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return dialog(provider, context);
+                              });
+                          if (provider.confirmDelete == true) {
                             return true;
+                          }else{
+                            return false;
                           }
-                          return false;
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(
@@ -148,26 +126,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                               child: Image.network(
                                                   "${provider.favoriteList[index].image}"),
                                             ),
-                                      // Row(
-                                      //   mainAxisAlignment:
-                                      //       MainAxisAlignment.spaceEvenly,
-                                      //   children: [
-                                      //     favoriteAndAddIcon(
-                                      //       iconData: Icons.favorite_border,
-                                      //       onPressedFun: () {
-                                      //         favoriteProvider.addProductToFavorite(
-                                      //           productViewModel: productModel,
-                                      //         );
-                                      //       },
-                                      //     ),
-                                      //     favoriteAndAddIcon(
-                                      //       iconData: Icons.add,
-                                      //       onPressedFun: () {
-                                      //         print("****add icon****");
-                                      //       },
-                                      //     ),
-                                      //   ],
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -232,53 +190,47 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ),
     );
   }
-
-  Future<void> fontSizeFun() async {
-    loop:
-    for (int x = 1; x < 15; x++) {
-      if (x == 0 || x == 3 || x == 6 || x == 9 || x == 12 || x == 15) {
-        await pointOne();
-      } else if (x == 1 || x == 4 || x == 7 || x == 10 || x == 13) {
-        await pointTwo();
-      } else {
-        await pointThree();
-      }
-      setState(() {
-        _pointOne;
-        _pointTwo;
-        _pointThree;
-      });
-    }
-    setState(() {
-      loopEnd = true;
-    });
-  }
-  Future<void> pointOne() async {
-    await Future.delayed(const Duration(seconds: 1)).then((value) => {
-          _pointOne = 20.0,
-          _pointTwo = 10.0,
-          _pointThree = 10.0,
-        });
-  }
-  Future<void> pointTwo() async {
-    await Future.delayed(const Duration(seconds: 1)).then((value) => {
-          _pointOne = 10.0,
-          _pointTwo = 20.0,
-          _pointThree = 10.0,
-        });
-  }
-  Future<void> pointThree() async {
-    await Future.delayed(const Duration(seconds: 1)).then((value) => {
-          _pointOne = 10.0,
-          _pointTwo = 10.0,
-          _pointThree = 20.0,
-        });
-  }
   AppBar appBar(FavoriteScreenViewModel provider) {
     return AppBar(
       backgroundColor: kPrimaryColor,
       elevation: 0.0,
       title: Text(provider.appBarString),
+    );
+  }
+
+  AlertDialog dialog(FavoriteScreenViewModel provider, context) {
+    return AlertDialog(
+      shape: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16.0),
+        borderSide: BorderSide.none,
+      ),
+      elevation: 50,
+      title: const Text("هل حقا تريد حزف المنتج"),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          TextButton(
+            onPressed: () {
+              provider.confirmDeleteFun();
+              Get.back();
+            },
+            child: const Text(
+              "تأكيد",
+              style: TextStyle(color: Colors.redAccent),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              provider.rejectDeleteFun();
+              Get.back();
+            },
+            child: const Text(
+              "لا",
+              style: TextStyle(color: Colors.green),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

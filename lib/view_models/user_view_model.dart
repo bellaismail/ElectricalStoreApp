@@ -1,5 +1,4 @@
 import '../models/user_model.dart';
-
 class UserViewModel {
   UserViewModel({this.userModel});
   UserModel? userModel;
@@ -10,6 +9,7 @@ class UserViewModel {
   String? get password => userModel?.password;
   String? get currentUserId => userModel?.currentUserId;
 
-  set name(n) => name = n;
-  set image(i) => image = i;
+  set name(n) => userModel!.name = n;
+  set image(i) => userModel!.image = i;
+  set email(e) => userModel!.email = e;
 }

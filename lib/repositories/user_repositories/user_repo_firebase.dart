@@ -285,19 +285,22 @@ class UserRepoFirebase extends UserRepository {
   @override
   Future<void> deleteAccountAuth() async{
     FirebaseAuth auth = FirebaseAuth.instance;
+    String docId = getCurrentUserId();
     try{
-      await deleteAccountFirestore();
+
       await auth.currentUser!.delete();
       Get.offAll(LoginScreen());
+      await deleteAccountFirestore(docId);
+
     }catch(e){
       print("=== === $e === ===");
     }
   }
   @override
-  Future<void> deleteAccountFirestore() async{
+  Future<void> deleteAccountFirestore(String docId) async{
     CollectionReference c = FirebaseFirestore.instance.collection("UsersInfo");
     try{
-      await c.doc(getCurrentUserId()).delete();
+      await c.doc(docId).delete();
     }catch(e){
       print("=== === $e === ===");
     }

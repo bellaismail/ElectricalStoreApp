@@ -4,11 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:store_app2/repositories/user_repositories/abstract_user_repo.dart';
+import 'package:store_app2/view_models/drawer_view_model.dart';
+
+import '../user_view_model.dart';
 
 class HomeSettingViewModel extends ChangeNotifier {
   final String appBarTitle = "الاعدادات";
-  // UserViewModel? userViewModel;
+  UserViewModel? userViewModel;
   bool showCountDown = false;
   int countDownNum = 10;
   bool removeAccount = false;
@@ -16,12 +20,30 @@ class HomeSettingViewModel extends ChangeNotifier {
   bool rejectDelete = false;
   bool spinner = false;
 
+  changeName(context){
+    try{
+      var provider = Provider.of<DrawerViewModel>(context, listen: false);
+      provider.userViewModel!.name = "Bilal";
+      notifyListeners();
+    }on StackOverflowError catch(e){
+      print("e: ${e}");
+    }
+    print("=== ${userViewModel!.name} ===");
+    print("=== ${userViewModel!.email} ===");
+    print("=== ${userViewModel!.image} ===");
+    notifyListeners();
+  }
+
+  getUserData({required BuildContext context})async{
+    var provider = Provider.of<DrawerViewModel>(context, listen: false);
+    userViewModel = provider.userViewModel;
+  }
   profileImage({required AsyncSnapshot snapshot}) {
-    return snapshot.data["image"].isEmpty
+    return snapshot.data["image"] == ""
         ? const AssetImage("images/profile.png")
         : NetworkImage(
-            "${snapshot.data["image"]}",
-          );
+      "${snapshot.data["image"]}",
+    );
   }
   Future<void> deleteAccount({required UserRepository userRepository})async{
     spinner = true;
@@ -61,7 +83,6 @@ class HomeSettingViewModel extends ChangeNotifier {
     countDownFun(userRepository: userRepository);
     notifyListeners();
   }
-  // pick & ChangeImage //
   pickImageFun(ImageSource imageSource, {required UserRepository userRepository})async{
     var randomNum = Random().nextInt(1000000);
     ImagePicker imagePicker = ImagePicker();

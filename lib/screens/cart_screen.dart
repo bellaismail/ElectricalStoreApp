@@ -6,10 +6,33 @@ import 'package:store_app2/constant.dart';
 import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
 import 'package:store_app2/screens/details_screen.dart';
 import 'package:store_app2/view_models/cart_screen_view_model.dart';
-import 'package:store_app2/view_models/home_body_view_model.dart';
+import 'package:store_app2/widgets/cart/increment_and_decrement_icon_widget.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
 
+class _CartScreenState extends State<CartScreen> {
+
+
+  @override
+  void initState() {
+    var provider = Provider.of<CartScreenViewModel>(context, listen: false);
+    provider.getCartList();
+
+    StripePayment.setOptions(
+      StripeOptions(
+        publishableKey:
+            "pk_test_51M83b9JvHQWjzg97XmWc47fmvx9Nr1PxiOsZkoSSSD851DJMdoZVTbPTfQwNpcHva8T2JvTumWdczEyHQw2OZQh800YHKtUJ2p",
+        androidPayMode: 'test',
+        merchantId: "Your_Merchant_id",
+      ),
+    );
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -62,7 +85,9 @@ class CartScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                provider.checkOutFun();
+                              },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 13.0),
                                 child: Text(
@@ -103,7 +128,7 @@ class CartScreen extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
                                   child: Text(
-                                    "${provider.getPrice()}\$",
+                                    "${provider.getTotalPrice()}\$",
                                     style: const TextStyle(
                                       color: kSecondaryColor,
                                       fontSize: 25.0,
@@ -147,6 +172,7 @@ class CartScreen extends StatelessWidget {
                             },
                             child: Dismissible(
                               key: Key("${provider.cartList[index].id}"),
+                              movementDuration: const Duration(milliseconds: 600),
                               onDismissed: (dir) {
                                 provider.removeProductFromCart(
                                   productRepository: ProductTestRepo(),
@@ -155,7 +181,12 @@ class CartScreen extends StatelessWidget {
                                 );
                               },
                               confirmDismiss: (dir) async {
-                                if (dir == DismissDirection.startToEnd) {
+                                await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return dialog(provider, context);
+                                    });
+                                if (provider.confirmDelete == true) {
                                   return true;
                                 } else {
                                   return false;
@@ -174,8 +205,7 @@ class CartScreen extends StatelessWidget {
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 10.0, vertical: 5.0),
                                       decoration: BoxDecoration(
-                                        color:
-                                            Colors.lightGreen.withOpacity(0.4),
+                                        color: Colors.lightGreen.withOpacity(0.4),
                                         borderRadius:
                                             BorderRadius.circular(16.0),
                                         image: DecorationImage(
@@ -202,7 +232,7 @@ class CartScreen extends StatelessWidget {
                                             padding: const EdgeInsets.only(
                                                 top: 20.0),
                                             child: Text(
-                                              "${provider.cartList[index].price}\$",
+                                              "${(provider.cartList[index].price)! * (provider.cartList[index].productTotalNum)!}\$",
                                               style: const TextStyle(
                                                 color: kSecondaryColor,
                                                 fontSize: 20.0,
@@ -212,16 +242,20 @@ class CartScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      padding: const EdgeInsets.all(15.0),
-                                      decoration: const BoxDecoration(
-                                        color: kTextColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Text(
-                                        "x1",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
+                                    IncrementAndDecrementIcon(
+                                      num: provider.cartList[index].productTotalNum!,
+                                      uniqueKey: provider.cartList[index].id.toString(),
+                                      onConfirmFun: (dir)async{
+                                        var model = provider.cartList[index];
+                                        if(dir == DismissDirection.up){
+                                          provider.incrementNumOfProduct(productViewModel: model);
+                                          return false;
+                                        }else{
+                                          provider.decrementNumOfProduct(productViewModel: model);
+                                          return false;
+                                        }
+                                      },
+                                      productViewModel: provider.cartList[index],
                                     ),
                                   ],
                                 ),
@@ -245,9 +279,42 @@ class CartScreen extends StatelessWidget {
       centerTitle: true,
       title: Text(
         provider.title,
-        style: const TextStyle(
-          fontSize: 15.0,
-        ),
+      ),
+    );
+  }
+
+  AlertDialog dialog(CartScreenViewModel provider, context) {
+    return AlertDialog(
+      shape: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16.0),
+        borderSide: BorderSide.none,
+      ),
+      elevation: 50,
+      title: const Text("هل حقا تريد حزف المنتج"),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          TextButton(
+            onPressed: () {
+              provider.confirmDeleteFun();
+              Get.back();
+            },
+            child: const Text(
+              "تأكيد",
+              style: TextStyle(color: Colors.redAccent),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              provider.rejectDeleteFun();
+              Get.back();
+            },
+            child: const Text(
+              "لا",
+              style: TextStyle(color: Colors.green),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -276,7 +343,6 @@ class _painter extends CustomPainter {
     return false;
   }
 }
-
 class EmptyCartWidget extends StatelessWidget {
   const EmptyCartWidget({Key? key}) : super(key: key);
 
@@ -325,7 +391,6 @@ class EmptyCartWidget extends StatelessWidget {
     );
   }
 }
-
 class EmptyCartWidgetPainter extends CustomPainter {
   EmptyCartWidgetPainter({this.color});
 
@@ -353,3 +418,4 @@ class EmptyCartWidgetPainter extends CustomPainter {
     return false;
   }
 }
+

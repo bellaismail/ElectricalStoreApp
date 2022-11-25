@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/repositories/product_repositories/product_test_Repo.dart';
 import 'package:store_app2/screens/details_screen.dart';
 import 'package:store_app2/view_models/home_body_view_model.dart';
-import 'package:store_app2/view_models/product_view_model.dart';
 
 import '../home_widgets/product_card_widget.dart';
 
@@ -36,9 +34,7 @@ class _HomeBodyWidgetState extends State<HomeBodyWidget> {
             child: Stack(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(
-                    top: 90.0,
-                  ),
+                  margin: const EdgeInsets.only(top: 90.0),
                   decoration: const BoxDecoration(
                     color: kBackgroundColor,
                     borderRadius: BorderRadius.only(
@@ -63,33 +59,10 @@ class _HomeBodyWidgetState extends State<HomeBodyWidget> {
                           ),
                         );
                       },
-                      dataConnectionEnum:
-                      homeBodyViewModel.getDataConnectionEnum(),
+                      dataConnectionEnum: homeBodyViewModel.getDataConnectionEnum(),
                       favorite: provider.productList[index].favorite,
-                      favoriteOnPressedFun: () {
-                        provider.favoriteFunction(
-                          context: context,
-                          productViewModel: provider.productList[index],
-                          productRepository: ProductTestRepo(),
-                        );
-                      },
-                      addToCartOnPressedFun: () async {
-                        await provider
-                            .addProductToCartFun(
-                          context: context,
-                          productViewModel: provider.productList[index],
-                          productRepository: ProductTestRepo(),
-                        )
-                            .then((value) => {
-                          Fluttertoast.showToast(
-                            msg: "قمت باضافه منتج جديد",
-                            backgroundColor: kPrimaryColor,
-                            textColor: kBackgroundColor,
-                            gravity: ToastGravity.BOTTOM,
-                            toastLength: Toast.LENGTH_SHORT,
-                          ),
-                        });
-                      },
+                      addedToCart: provider.productList[index].addedToCart,
+                      productViewModel: provider.productList[index],
                     );
                   },
                 ),

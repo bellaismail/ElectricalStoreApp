@@ -104,11 +104,6 @@ class UserRepoAPI extends UserRepository{
     throw UnimplementedError();
   }
 
-  @override
-  Future<void> deleteAccountFirestore() {
-    // TODO: implement deleteAccountFirestore
-    throw UnimplementedError();
-  }
 
   @override
   Future<void> pickImageToStorage({required File file, required String? imageName}) {
@@ -119,6 +114,12 @@ class UserRepoAPI extends UserRepository{
   @override
   Future<void> saveImagePathToFirestore({required String path}) {
     // TODO: implement saveImagePathToFirestore
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteAccountFirestore(String docId) {
+    // TODO: implement deleteAccountFirestore
     throw UnimplementedError();
   }
 

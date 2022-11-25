@@ -1,3 +1,4 @@
+import '';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,9 @@ import 'package:store_app2/repositories/user_repositories/user_repo_firebase.dar
 import 'package:store_app2/screens/setting_screens/change_email_screen.dart';
 import 'package:store_app2/screens/setting_screens/change_name_screen.dart';
 import 'package:store_app2/screens/setting_screens/change_password_screen.dart';
+import 'package:store_app2/view_models/drawer_view_model.dart';
 import 'package:store_app2/view_models/setting_screens_view_model/home_setting_view_mode.dart';
+import 'package:sqflite/sqflite.dart';
 
 class HomeSettingScreen extends StatefulWidget {
   @override
@@ -20,13 +23,17 @@ class _HomeSettingScreenState extends State<HomeSettingScreen> {
   final _key = GlobalKey<FormState>();
   @override
   void initState() {
+    var provider = Provider.of<HomeSettingViewModel>(context, listen: false);
+    provider.getUserData(context: context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var stream = FirebaseFirestore.instance.collection("UsersInfo").doc(UserRepoFirebase().getCurrentUserId()).snapshots();
+    var docId = UserRepoFirebase().getCurrentUserId();
+    var stream = FirebaseFirestore.instance.collection("UsersInfo").doc(docId).snapshots();
     var provider = Provider.of<HomeSettingViewModel>(context);
+    var drawerProvider = Provider.of<DrawerViewModel>(context);
     var size = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: kBackgroundColor,
@@ -59,7 +66,7 @@ class _HomeSettingScreenState extends State<HomeSettingScreen> {
                   StreamBuilder(
                       stream: stream,
                       builder: (context, AsyncSnapshot snapshot){
-                        // if(snapshot.connectionState != ConnectionState.waiting){
+                        if(snapshot.hasData){
                           return Container(
                             width: 150.0,
                             height: 150.0,
@@ -78,9 +85,9 @@ class _HomeSettingScreenState extends State<HomeSettingScreen> {
                               ),
                             ),
                           );
-                        // }else{
-                        //   return const Center(child: CircularProgressIndicator(),);
-                        // }
+                        }else{
+                          return const Center(child: CircularProgressIndicator(),);
+                        }
                   }),
                   Positioned(
                     bottom: 0.0,
@@ -192,52 +199,52 @@ class _HomeSettingScreenState extends State<HomeSettingScreen> {
                       !provider.showCountDown
                           ? const SizedBox()
                           : Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    provider.confirmDelete = true;
-                                  },
-                                  child: const Text(
-                                    "تأكيد",
-                                    style: TextStyle(
-                                        color: Colors.redAccent),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          provider.confirmDelete = true;
+                                        },
+                                        child: const Text(
+                                          "تأكيد",
+                                          style: TextStyle(
+                                              color: Colors.redAccent),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          provider.rejectDelete = true;
+                                        },
+                                        child: const Text(
+                                          "الغاء",
+                                          style: TextStyle(color: kTextColor),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    provider.rejectDelete = true;
-                                  },
-                                  child: const Text(
-                                    "الغاء",
-                                    style: TextStyle(
-                                        color: kTextColor),
+                                  Selector<HomeSettingViewModel, int>(
+                                    selector: (context, getCountDown) =>
+                                        getCountDown.countDownNum,
+                                    builder: (context, countDown, child) {
+                                      return CustomPaint(
+                                        painter: CirclePainter(),
+                                        child: Container(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          alignment: Alignment.center,
+                                          child: Text("$countDown"),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                            Selector<HomeSettingViewModel, int>(
-                              selector: (context, getCountDown) => getCountDown.countDownNum,
-                              builder: (context, countDown, child){
-                                return CustomPaint(
-                                  painter: CirclePainter(),
-                                  child: Container(
-                                    width: 50.0,
-                                    height: 50.0,
-                                    alignment: Alignment.center,
-                                    child: Text("$countDown"),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),

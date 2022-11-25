@@ -6,12 +6,16 @@ import 'package:store_app2/screens/favorite_screen.dart';
 import 'package:store_app2/screens/setting_screens/home_setting_screen.dart';
 import 'package:store_app2/view_models/register_views_models/register_screen_view_model.dart';
 import 'package:store_app2/view_models/user_view_model.dart';
-
 import '../models/user_model.dart';
 import '../repositories/user_repositories/user_repo_firebase.dart';
 import '../screens/about_screen.dart';
 
 class DrawerViewModel with ChangeNotifier{
+  UserViewModel? userViewModel;
+  final UserRepository userRepository;
+  DrawerViewModel({required this.userRepository});
+
+  bool signOut = false;
   List<Map<String, dynamic>> drawerRowList = [
     {
       "text": "عربتك",
@@ -48,14 +52,21 @@ class DrawerViewModel with ChangeNotifier{
     {
       "text": "تسجيل الخروج",
       "icon": Icons.logout_rounded,
-      "onTapFun": () {
+      "onTapFun": (){
         RegisterScreenViewModel data = RegisterScreenViewModel();
         data.signOut(userRepository: UserRepoFirebase());
       },
     },
   ];
 
-  UserViewModel? userViewModel;
+  confirmSignOut(){
+    signOut = true;
+    notifyListeners();
+  }
+  rejectSignOut(){
+    signOut = false;
+    notifyListeners();
+  }
   Future<void> getUserData({required UserRepository userRepository}) async {
     String userDocId = userRepository.getCurrentUserId();
     UserModel userModel = await userRepository.getCurrentUserInfo(userDocId: userDocId);

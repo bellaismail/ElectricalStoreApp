@@ -1,7 +1,7 @@
 class ProductModel {
-  int? id, price;
+  int? id, price, productTotalNum;
   String? title, subTitle, description, image;
-  bool? favorite;
+  bool? favorite, addToCart;
 
   ProductModel({
     this.id,
@@ -11,6 +11,8 @@ class ProductModel {
     this.description,
     this.image,
     this.favorite = false,
+    this.addToCart = false,
+    this.productTotalNum = 1,
   });
 
   ProductModel.fromJSON(Map<String, dynamic>json){
@@ -20,7 +22,6 @@ class ProductModel {
     subTitle = json["subTitle"];
     description = json["description"];
     image = json["image"];
-    favorite = json["favorite"];
   }
 
   Map<String, dynamic>toJSON(){

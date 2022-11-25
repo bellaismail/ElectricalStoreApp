@@ -21,7 +21,7 @@ abstract class UserRepository{
   Future<void> verifyEmail();
   Future<void> resetPassword({required String email});
   Future<void> deleteAccountAuth();
-  Future<void> deleteAccountFirestore();
+  Future<void> deleteAccountFirestore(String docId);
   Future<void> pickImageToStorage({required File file, required String? imageName});
   Future<void> saveImagePathToFirestore({required String path});
 }

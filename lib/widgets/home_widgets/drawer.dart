@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app2/constant.dart';
 import 'package:store_app2/repositories/user_repositories/user_repo_firebase.dart';
@@ -43,6 +44,7 @@ class HeaderDrawerWidget extends StatefulWidget {
 }
 
 class _HeaderDrawerWidgetState extends State<HeaderDrawerWidget> {
+
   @override
   void initState() {
     Provider.of<DrawerViewModel>(context, listen: false).getUserData(userRepository: UserRepoFirebase());
@@ -90,11 +92,11 @@ class _HeaderDrawerWidgetState extends State<HeaderDrawerWidget> {
 }
 
 class BodyDrawerWidget extends StatelessWidget {
-  DrawerViewModel drawerViewModel = DrawerViewModel();
-
+  DrawerViewModel drawerViewModel = DrawerViewModel(userRepository: UserRepoFirebase());
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> drawerRowList = drawerViewModel.drawerRowList;
+    var provider = Provider.of<DrawerViewModel>(context);
     return Expanded(
       child: Column(
         children: [
@@ -157,44 +159,3 @@ class BodyDrawerRowWidget extends StatelessWidget {
     );
   }
 }
-
-
-
-/*
-* StreamBuilder(
-          stream: drawerViewModel.getUserData().asStream(),
-          builder: (context, AsyncSnapshot<UserViewModel> snapshot) {
-            return snapshot.connectionState == ConnectionState.waiting
-                ? const Center(child: CircularProgressIndicator())
-                : Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        child: Container(
-                          alignment: Alignment.bottomCenter,
-                          margin: const EdgeInsets.only(top: 50),
-                          width: double.infinity - 50,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(75.0),
-                              bottomRight: Radius.circular(75.0),
-                            ),
-                          ),
-                        ),
-                        backgroundImage: NetworkImage(
-                          "${snapshot.data!.image}",
-                        ),
-                      ),
-                      Text(
-                        "${snapshot.data!.name}",
-                      ),
-                      Text(
-                        "${snapshot.data!.email}",
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  );
-          },
-        )
-* */

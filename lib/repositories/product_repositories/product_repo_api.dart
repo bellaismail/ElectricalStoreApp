@@ -38,7 +38,7 @@ class ProductAPIRepo extends ProductRepository {
   }
 
   @override
-  Future<void> favoriteIcon({required BuildContext context, ProductViewModel? productViewModel}) {
+  Future<void> addProductToFavorite({required BuildContext context, ProductViewModel? productViewModel}) {
     // TODO: implement favoriteIcon
     throw UnimplementedError();
   }
@@ -62,8 +62,18 @@ class ProductAPIRepo extends ProductRepository {
   }
 
   @override
-  Future<void> removeProductFromCart({required BuildContext context, required ProductViewModel productViewModel}) {
+  Future<void> removeProductFromCartList({required BuildContext context, required ProductViewModel productViewModel}) {
     // TODO: implement removeProductFromCart
     throw UnimplementedError();
+  }
+
+  @override
+  void removeFavoriteFromHomeList(context, {required ProductViewModel productViewModel}) {
+    // TODO: implement unFavoriteFunction
+  }
+
+  @override
+  void removeAddedProductFromHomeList(context, {required ProductViewModel productViewModel}) {
+    // TODO: implement removeAddedProductFromHomeList
   }
 }

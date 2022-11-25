@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app2/repositories/user_repositories/user_repo_firebase.dart';
 import 'package:store_app2/screens/auth_screens/login_screen.dart';
 import 'package:store_app2/screens/home_screen.dart';
 import 'package:store_app2/view_models/cart_screen_view_model.dart';
@@ -22,7 +24,6 @@ import 'package:store_app2/view_models/setting_screens_view_model/change_passwor
 import 'package:store_app2/view_models/setting_screens_view_model/forget_password_view_model.dart';
 import 'package:store_app2/view_models/setting_screens_view_model/home_setting_view_mode.dart';
 import 'package:store_app2/widgets/home_widgets/home_body_widget.dart';
-
 import 'constant.dart';
 
 void main() async {
@@ -48,13 +49,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HomeBodyViewModel()),
         ChangeNotifierProvider(create: (context) => CartScreenViewModel()),
         ChangeNotifierProvider(create: (context) => HomeSettingViewModel()),
-        ChangeNotifierProvider(create: (context) => DrawerViewModel()),
+        ChangeNotifierProvider(create: (context) => DrawerViewModel(userRepository: UserRepoFirebase())),
         ChangeNotifierProvider(create: (context) => ChangeNameScreenViewModel()),
         ChangeNotifierProvider(create: (context) => ChangeEmailScreenViewModel()),
         ChangeNotifierProvider(create: (context) => ChangePasswordScreenViewModel()),
         ChangeNotifierProvider(create: (context) => ForgetPasswordViewModel()),
       ],
       builder: (context, child) {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]);
         return GetMaterialApp(
           title: "electrical store",
           debugShowCheckedModeBanner: false,
